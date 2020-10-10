@@ -31,16 +31,18 @@
             {imageUrl: './images/icon/museum.png', id: 'museum'},
             {imageUrl: './images/icon/church.png', id: 'church'},
             {imageUrl: './images/icon/outdoor.png', id: 'outdoor'},
-        ]
+            {imageUrl: './images/poi/MC.jpeg', id: 'MC'},
+        ];
         images.forEach(img => {
             map.loadImage(img.imageUrl, function(error, res) {
                 map.addImage(img.id, res)
             })
-        })
+        });
 
         map.addLayer({
             id: 'museum points',
             type: 'symbol',
+            minzoom: 14,
             source: {
                 type: 'vector',
                 url: 'mapbox://yunningg.d15riytj' // Your Mapbox Tileset Map ID
@@ -57,12 +59,22 @@
                         ['Informal Outdoor Facility (Park/Garden/Reserve)', 'outdoor'],
                     ]
                 },
-                'icon-size': 0.08
+                'icon-size': 0.08,
+                'icon-allow-overlap': true
             },
             'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
         });
-    });
 
+        map.addLayer({
+            'id': 'imageAvatar',
+            'type': 'symbol',
+            'source': 'places',
+            'layout': {
+                'icon-image': 'MC',
+                'icon-allow-overlap': true
+            }
+        });
+    });
 
     map.addControl(
         new MapboxDirections({
@@ -70,6 +82,21 @@
         }),
         'top-left'
     );
+
+    // var MelbourneCentral = [144.9628, -37.8102];
+    //
+    // // create the popup
+    // var popup = new mapboxgl.Popup({offset: 25}).setText('Construction on the Washington Monument began in 1848.');
+    //
+    // // create DOM element for the marker
+    // var el = document.createElement('div');
+    // el.id = 'marker';
+    //
+    // // create the marker
+    // new mapboxgl.Marker(el)
+    //     .setLngLat(MelbourneCentral)
+    //     .setPopup(popup) // sets a popup on this marker
+    //     .addTo(map);
 </script>
 
 </body>
