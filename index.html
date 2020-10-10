@@ -25,11 +25,8 @@
         center: [144.96, -37.81],
         zoom: 13
     });
+    var markerArr = [];
 
-    // map.addSource('urban-areas', {
-    //     'type': 'geojson',
-    //     'data': 'mapbox://yunningg.d15riytj'
-    // });
 
     map.on('load', function () {
         const images = [
@@ -46,6 +43,11 @@
             })
         });
 
+        map.addSource('poiJSON', {
+            'type': 'geojson',
+            'data': 'datasets/Melbourne_POIs_MGA.geojson'
+        });
+
         map.addSource('poi', {
             type: 'vector',
             url: 'mapbox://yunningg.d15riytj'
@@ -54,7 +56,7 @@
         map.addLayer({
             id: 'museum points',
             type: 'symbol',
-            maxzoom: 14,
+            maxzoom: 15.3,
             source: 'poi',
             layout: {
                 'visibility': 'visible',
@@ -74,6 +76,31 @@
             'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
         });
 
+        map.on("sourcedata", function(e) {
+            if (map.getSource('poi') && map.isSourceLoaded('poi')) {
+                console.log('source loaded!');
+                var features = map.querySourceFeatures('poi', {
+                    sourceLayer: 'Melbourne_POIs_MGA-0lenk4'
+                });
+                console.log(features);
+                features.forEach(x => {
+                    var popup = new mapboxgl.Popup({offset: 25}).setText(x.properties.Feature_Na);
+                    // create a HTML element for each feature
+                    var el = document.createElement('div');
+                    el.className = 'marker';
+                    el.hidden = true;
+                    markerArr.push(el);
+                    console.log(x.geometry.coordinates);
+                    // make a marker for each feature and add to the map
+                    new mapboxgl.Marker(el)
+                        .setLngLat(x.geometry.coordinates)
+                        .setPopup(popup)
+                        .addTo(map);
+                });
+            }
+        });
+
+
     });
 
     // map.addControl(
@@ -83,29 +110,34 @@
     //     'top-left'
     // );
 
-    var MelbourneCentral = [144.9628, -37.8102];
+
+
+    // var MelbourneCentral = [144.9628, -37.8102];
 
     // create the popup
-    var popupArr = [];
-    var popup = new mapboxgl.Popup({offset: 25}).setText('Construction on the Washington Monument began in 1848.');
+    // var popupArr = [];
+    // var popup = new mapboxgl.Popup({offset: 25}).setText('Construction on the Washington Monument began in 1848.');
 
     // create DOM element for the marker
-    var elementArr = [];
-    var el = document.createElement('div');
-    el.className = 'marker';
-    el.hidden = true;
+    // var el = document.createElement('div');
+    // el.className = 'marker';
+    // el.hidden = true;
 
-    // create the marker
-    new mapboxgl.Marker(el)
-        .setLngLat(MelbourneCentral)
-        .setPopup(popup) // sets a popup on this marker
-        .addTo(map);
+    // // create the marker
+    // new mapboxgl.Marker(el)
+    //     .setLngLat(MelbourneCentral)
+    //     .setPopup(popup) // sets a popup on this marker
+    //     .addTo(map);
 
     map.on('zoom', function () {
-        if (map.getZoom() <= 16) {
-            el.hidden = true;
+        if (map.getZoom() <= 15.3) {
+            markerArr.forEach(el => {
+                el.hidden = true;
+            });
         } else {
-            el.hidden = false;
+            markerArr.forEach(el => {
+                el.hidden = false;
+            });
         }
     });
 </script>
