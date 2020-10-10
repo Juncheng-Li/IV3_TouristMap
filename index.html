@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Display driving directions</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
-    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet"/>
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
@@ -26,27 +26,36 @@
         zoom: 13
     });
 
-    map.on('load', function() {
-        const images =[
+    // map.addSource('urban-areas', {
+    //     'type': 'geojson',
+    //     'data': 'mapbox://yunningg.d15riytj'
+    // });
+
+    map.on('load', function () {
+        const images = [
             {imageUrl: './images/icon/museum.png', id: 'museum'},
             {imageUrl: './images/icon/church.png', id: 'church'},
             {imageUrl: './images/icon/outdoor.png', id: 'outdoor'},
             {imageUrl: './images/poi/MC.jpeg', id: 'MC'},
+            {imageUrl: './images/poi/result.png', id: 'result'},
+            {imageUrl: './images/poi/mask.png', id: 'mask'},
         ];
         images.forEach(img => {
-            map.loadImage(img.imageUrl, function(error, res) {
+            map.loadImage(img.imageUrl, function (error, res) {
                 map.addImage(img.id, res)
             })
+        });
+
+        map.addSource('poi', {
+            type: 'vector',
+            url: 'mapbox://yunningg.d15riytj'
         });
 
         map.addLayer({
             id: 'museum points',
             type: 'symbol',
-            minzoom: 14,
-            source: {
-                type: 'vector',
-                url: 'mapbox://yunningg.d15riytj' // Your Mapbox Tileset Map ID
-            },
+            maxzoom: 14,
+            source: 'poi',
             layout: {
                 'visibility': 'visible',
                 // 'icon-image': 'museum',
@@ -65,38 +74,40 @@
             'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
         });
 
-        map.addLayer({
-            'id': 'imageAvatar',
-            'type': 'symbol',
-            'source': 'places',
-            'layout': {
-                'icon-image': 'MC',
-                'icon-allow-overlap': true
-            }
-        });
     });
 
-    map.addControl(
-        new MapboxDirections({
-            accessToken: mapboxgl.accessToken
-        }),
-        'top-left'
-    );
+    // map.addControl(
+    //     new MapboxDirections({
+    //         accessToken: mapboxgl.accessToken
+    //     }),
+    //     'top-left'
+    // );
 
-    // var MelbourneCentral = [144.9628, -37.8102];
-    //
-    // // create the popup
-    // var popup = new mapboxgl.Popup({offset: 25}).setText('Construction on the Washington Monument began in 1848.');
-    //
-    // // create DOM element for the marker
-    // var el = document.createElement('div');
-    // el.id = 'marker';
-    //
-    // // create the marker
-    // new mapboxgl.Marker(el)
-    //     .setLngLat(MelbourneCentral)
-    //     .setPopup(popup) // sets a popup on this marker
-    //     .addTo(map);
+    var MelbourneCentral = [144.9628, -37.8102];
+
+    // create the popup
+    var popupArr = [];
+    var popup = new mapboxgl.Popup({offset: 25}).setText('Construction on the Washington Monument began in 1848.');
+
+    // create DOM element for the marker
+    var elementArr = [];
+    var el = document.createElement('div');
+    el.className = 'marker';
+    el.hidden = true;
+
+    // create the marker
+    new mapboxgl.Marker(el)
+        .setLngLat(MelbourneCentral)
+        .setPopup(popup) // sets a popup on this marker
+        .addTo(map);
+
+    map.on('zoom', function () {
+        if (map.getZoom() <= 16) {
+            el.hidden = true;
+        } else {
+            el.hidden = false;
+        }
+    });
 </script>
 
 </body>
