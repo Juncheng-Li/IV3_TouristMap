@@ -87,6 +87,10 @@
                     var popup = new mapboxgl.Popup({offset: 25}).setText(x.properties.Feature_Na);
                     // create a HTML element for each feature
                     var el = document.createElement('div');
+                    var im = new Image();
+                    im.src = './images/poi/Melbourne Central.jpeg';
+                    // im.src = './images/poi/' + x.properties.Feature_Na + '.jpeg';
+                    el.appendChild(im);
                     el.className = 'marker';
                     el.hidden = true;
                     markerArr.push(el);
