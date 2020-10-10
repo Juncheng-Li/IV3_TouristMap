@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Attach a popup to a marker instance</title>
+    <!--    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>-->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet"/>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoianVuY2hlbmdsaSIsImEiOiJja2ZxdjFobjcwMGxvMnlxZ204Mm95dDRlIn0.syIsi4Kg86MzzpadvOy0yg';
+    var MelbourneCentral = [144.9628, -37.8102];
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v10',
+        center: MelbourneCentral,
+        zoom: 10
+    });
+
+</script>
+
+</body>
+</html>
