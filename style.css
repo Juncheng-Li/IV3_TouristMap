@@ -10,6 +10,57 @@ body {
     width: 100%;
 }
 
+.map-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 1);
+    margin-right: 20px;
+    font-family: Arial, sans-serif;
+    overflow: auto;
+    border-radius: 3px;
+}
+
+#detailPanel {
+    top: 0;
+    left: 20px;
+    height: 400px;
+    margin-top: 20px;
+    width: 300px;
+}
+
+#detailTitle {
+    margin-top: 20px;
+}
+
+h2 {
+    margin: 10px;
+    font-size: 1.2em;
+    text-align: left;
+}
+
+p {
+    margin: 10px;
+    font-size: 1em;
+    text-align: right;
+}
+
+#place {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.nav-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+}
+
+
+
+
 .marker > img {
     /*background-image: url('./images/poi/Melbourne Central.jpeg');*/
     background-size: cover;
@@ -20,5 +71,15 @@ body {
 }
 
 .mapboxgl-popup {
-    max-width: 200px;
+    max-width: none;
+    max-height: none;
 }
+
+.mapboxgl-popup-content {
+    width: 350px;
+    height: 400px;
+}
+
+/*.mapboxgl-popup > #logo {*/
+/*    width: 100px;*/
+/*}*/

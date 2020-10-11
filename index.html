@@ -16,6 +16,25 @@
         type="text/css"
 />
 <div id="map"></div>
+<div class="map-overlay" id="detailPanel">
+    <div id="detailTitle">
+        <h3>This is what you are looking for</h3>
+    </div>
+    <div>
+        <img id = "place" src="./images/poi/Melbourne%20Central.jpeg" alt="poi">
+    </div>
+    <br>
+    <div class="advanceInfo">
+        <p class="infoButton ">
+<!--            <img class="nav-btn" id="park-btn" src="images/other/parkSign.png" alt="">-->
+<!--            <img class="nav-btn" id="ptv-btn" src="images/other/ptv.jpeg" alt="">-->
+<!--            <img class="nav-btn" id="bike-btn" src="images/other/bike.png" alt="">-->
+            <button id="park-btn">park</button>
+            <button id="bike-btn">bike</button>
+            <button id="ptv-btn">ptv</button>
+        </p>
+    </div>
+</div>
 
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoieXVubmluZ2ciLCJhIjoiY2tldjl0ZmZoMjRoajJxcXYzNGU1M2p0aCJ9.30fp6J7Abr9VbS_ev_jYpA';
@@ -23,19 +42,18 @@
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [144.96, -37.81],
-        zoom: 13
+        zoom: 14
     });
     var markerArr = [];
 
+    var detailPanel = document.getElementById("detailPanel");
+    detailPanel.hidden = true;
 
     map.on('load', function () {
         const images = [
             {imageUrl: './images/icon/museum.png', id: 'museum'},
             {imageUrl: './images/icon/church.png', id: 'church'},
             {imageUrl: './images/icon/outdoor.png', id: 'outdoor'},
-            {imageUrl: './images/poi/MC.jpeg', id: 'MC'},
-            {imageUrl: './images/poi/result.png', id: 'result'},
-            {imageUrl: './images/poi/mask.png', id: 'mask'},
         ];
         images.forEach(img => {
             map.loadImage(img.imageUrl, function (error, res) {
@@ -56,7 +74,7 @@
         map.addLayer({
             id: 'museum points',
             type: 'symbol',
-            maxzoom: 15.3,
+            maxzoom: 15.9,
             source: 'poi',
             layout: {
                 'visibility': 'visible',
@@ -76,6 +94,8 @@
             'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
         });
 
+
+        //mark and popup
         map.on("sourcedata", function(e) {
             if (map.getSource('poi') && map.isSourceLoaded('poi')) {
                 console.log('source loaded!');
@@ -83,25 +103,55 @@
                     sourceLayer: 'Melbourne_POIs_MGA-0lenk4'
                 });
                 features.forEach(x => {
-                    var popup = new mapboxgl.Popup({offset: 25}).setText(x.properties.Feature_Na);
-                    var el = document.createElement('div');
-                    var im = new Image();
-                    im.src = './images/poi/Melbourne Central.jpeg';
-                    // im.src = './images/poi/' + x.properties.Feature_Na + '.jpeg';
-                    el.appendChild(im);
-                    el.className = 'marker';
-                    el.hidden = true;
-                    markerArr.push(el);
-                    new mapboxgl.Marker(el)
-                        .setLngLat(x.geometry.coordinates)
-                        .setPopup(popup)
-                        .addTo(map);
+                    if (x.properties.Theme !== "Transport") {
+                        // popup
+                        // var html = '<h4>' + x.properties.Feature_Na + '</h4>' +
+                        //     '<img id=\"logo\" src=\'./images/poi/Melbourne%20Central.jpeg\'>';
+                        // var popup = new mapboxgl.Popup({offset: 25}).setHTML(html);
+
+                        // mark
+                        var el = document.createElement('div');
+                        var im = new Image();
+                        im.src = './images/poi/Melbourne Central.jpeg';
+                        // im.src = './images/poi/' + x.properties.Feature_Na + '.jpeg';
+                        el.appendChild(im);
+                        el.className = 'marker';
+                        el.hidden = true;
+                        el.id = x.properties.Feature_Na;
+                        el.addEventListener('click', (e) => {
+                            // console.log(e.path);
+                            // console.log(e.path[1]);
+                            // console.log(e.path[1].id);
+                            var detailTitle = document.getElementById("detailTitle");
+                            detailTitle.innerHTML = '<h2>' + x.properties.Feature_Na + '</h2>';
+                            detailPanel.hidden = false;
+                        });
+                        markerArr.push(el);
+                        new mapboxgl.Marker(el)
+                            .setLngLat(x.geometry.coordinates)
+                            // .setPopup(popup)
+                            .addTo(map);
+                    }
                 });
             }
         });
 
+        var parkBtn = document.getElementById("park-btn");
+        parkBtn.addEventListener('click', () => {
+            console.log("park!!!");
+        });
+        var ptvBtn = document.getElementById("ptv-btn");
+        ptvBtn.addEventListener('click', () => {
+            console.log("ptv!!!");
+        });
+        var bikeBtn = document.getElementById("bike-btn");
+        bikeBtn.addEventListener('click', () => {
+            console.log("bike!!!");
+        });
 
     });
+
+
 
     // map.addControl(
     //     new MapboxDirections({
@@ -111,7 +161,7 @@
     // );
 
     map.on('zoom', function () {
-        if (map.getZoom() <= 15.3) {
+        if (map.getZoom() <= 15.9) {
             markerArr.forEach(el => {
                 el.hidden = true;
             });
