@@ -21,8 +21,8 @@
     <div id="detailTitle">
         <h3>This is</h3>
     </div>
-    <div>
-        <img id = "place" src="./images/poi/Melbourne%20Central.jpeg" alt="poi">
+    <div id="place">
+        <img id = "placeImage" src="./images/poi/Melbourne%20Central.jpg" alt="poi">
     </div>
     <br>
     <div class="advanceInfo">
@@ -133,8 +133,8 @@
                         // mark
                         var el = document.createElement('div');
                         var im = new Image();
-                        im.src = './images/poi/Melbourne Central.jpeg';
-                        // im.src = './images/poi/' + x.properties.Feature_Na + '.jpeg';
+                        // im.src = './images/poi/Melbourne Central.jpg';
+                        im.src = './images/poi/' + x.properties.Feature_Na + '.jpg';
                         el.appendChild(im);
                         el.className = 'marker';
                         el.hidden = true;
@@ -142,6 +142,10 @@
                         el.addEventListener('click', (e) => {
                             var detailTitle = document.getElementById("detailTitle");
                             detailTitle.innerHTML = '<h2>' + x.properties.Feature_Na + '</h2>';
+                            // var placeImg = document.getElementById("placeImage");
+                            // placeImg.src = './images/poi/' + x.properties.Feature_Na + '.jpg';
+                            var placeImg = document.getElementById("place");
+                            placeImg.innerHTML = "<img id = \"placeImage\" src=\"./images/poi/" + x.properties.Feature_Na + ".jpg\" alt=\"poi\">";
                             detailPanel.hidden = false;
                         });
                         markerArr.push(el);
