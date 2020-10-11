@@ -22,3 +22,15 @@ body {
 .mapboxgl-popup {
     max-width: 200px;
 }
+
+#details {
+    position: absolute;
+    margin: 0;
+    border: 0;
+    top: 20%;
+    bottom: 0;
+    left: 50px;
+    width: 400px;
+    height: 500px;
+    background-color: white;
+}

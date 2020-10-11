@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Display driving directions</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet"/>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+<link
+        rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css"
+        type="text/css"
+/>
+<div id="map"></div>
+
+<div id="details">
+    <button id="btn-close">Close</button>
+    <div class="baseInfo">
+        <div id="info-name">捷運中山站街區_心中山線形公園</div>
+    </div>
+    <div class="thumb-frame"><img class="thumb lazyloaded" src="./images/poi/Melbourne%20Central.jpeg"></div>
+    <div class="advanceInfo">
+        <p class="infoButton ">
+            <button id="btn-station">週邊捷運</button>
+            <button id="btn-bus">週邊公車</button>
+            <button id="btn-parking">週邊停車場</button>
+        </p>
+        <div class="Sub_Theme"><span id="tag">潮流商圈</span></div>
+        <p id="info-location">臺北市中山區中山北路2段</p>
+        <p id="info-time">依商圈各店情況不同</p>
+        <p id="info-introduction"><span class="info-">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</span></p>
+    </div>
+</div>
+
+<!--<div class="spot-detail-info-panel show "><span tabindex="0"></span>-->
+<!--    <button class="btn-close">閉關</button>-->
+<!--    <button class="btn-info-expand">展開</button>-->
+<!--    <div class="spot-base-info">-->
+<!--        <div class="spot-name">捷運中山站街區_心中山線形公園</div>-->
+<!--    </div>-->
+<!--    <div class="thumb-frame"><img class="thumb lazyloaded" src="https://www.travel.taipei/image/179862/1024x768"></div>-->
+<!--    <div class="spot-adv-info">-->
+<!--        <p class="info adj button ">-->
+<!--            <button class="btn-base btn-show-mrt">週邊捷運</button>-->
+<!--            <button class="btn-base btn-show-bus">週邊公車</button>-->
+<!--            <button class="btn-base btn-show-parking">週邊停車場</button>-->
+<!--            <button class="btn-base btn-show-bike">週邊YouBike</button>-->
+<!--        </p>-->
+<!--        <div class="tag-list"><span class="tag">潮流商圈</span></div>-->
+<!--        <p class="info location">臺北市中山區中山北路2段</p>-->
+<!--        <p class="info time">依商圈各店情況不同</p>-->
+<!--        <p class="info adj"><a class="btn-link-to-page" target="_blank"-->
+<!--                               href="https://www.travel.taipei/zh-tw/attraction/details/1588">詳細內容</a><span-->
+<!--                tabindex="0"></span></p></div>-->
+<!--</div>-->
+
+
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoieXVubmluZ2ciLCJhIjoiY2tldjl0ZmZoMjRoajJxcXYzNGU1M2p0aCJ9.30fp6J7Abr9VbS_ev_jYpA';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [144.96, -37.81],
+        zoom: 13
+    });
+
+    map.on('load', function () {
+        const images = [
+            {imageUrl: './images/icon/museum.png', id: 'museum'},
+            {imageUrl: './images/icon/church.png', id: 'church'},
+            {imageUrl: './images/icon/outdoor.png', id: 'outdoor'},
+        ]
+        images.forEach(img => {
+            map.loadImage(img.imageUrl, function (error, res) {
+                map.addImage(img.id, res)
+            })
+        })
+
+        map.addLayer({
+            id: 'POIs',
+            type: 'symbol',
+            source: {
+                type: 'vector',
+                url: 'mapbox://yunningg.d15riytj' // Your Mapbox Tileset Map ID
+            },
+            layout: {
+                'visibility': 'visible',
+                // 'icon-image': 'museum',
+                'icon-image': {
+                    property: 'Sub_Theme',
+                    type: 'categorical',
+                    stops: [
+                        ['Art Gallery/Museum', 'museum'],
+                        ['Church', 'church'],
+                        ['Informal Outdoor Facility (Park/Garden/Reserve)', 'outdoor'],
+                    ]
+                },
+                'icon-size': 0.08
+            },
+            'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
+        });
+    });
+
+
+    // map.addControl(
+    //     new MapboxDirections({
+    //         accessToken: mapboxgl.accessToken
+    //     }),
+    //     'top-left'
+    // );
+
+    map.on('click', 'POIs', function (e) {
+        var infoName = document.getElementById("info-name")
+        var tag = document.getElementById("tag")
+
+        var Feature_Na = e.features[0].properties.Feature_Na;
+        var Theme = e.features[0].properties.Theme;
+
+        infoName.innerHTML = Feature_Na;
+        tag.innerHTML = Theme;
+    });
+
+
+
+
+</script>
+
+</body>
+</html>
