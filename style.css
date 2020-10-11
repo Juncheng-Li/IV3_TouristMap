@@ -52,6 +52,10 @@ p {
     width: 100%;
 }
 
+#close-btn {
+    float: right;
+}
+
 .nav-btn {
     width: 40px;
     height: 40px;

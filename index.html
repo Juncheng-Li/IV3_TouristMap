@@ -17,8 +17,9 @@
 />
 <div id="map"></div>
 <div class="map-overlay" id="detailPanel">
+    <button id="close-btn">x</button>
     <div id="detailTitle">
-        <h3>This is what you are looking for</h3>
+        <h3>This is</h3>
     </div>
     <div>
         <img id = "place" src="./images/poi/Melbourne%20Central.jpeg" alt="poi">
@@ -48,6 +49,26 @@
 
     var detailPanel = document.getElementById("detailPanel");
     detailPanel.hidden = true;
+
+
+    var parkBtn = document.getElementById("park-btn");
+    parkBtn.addEventListener('click', () => {
+        console.log("park!!!");
+    });
+    var ptvBtn = document.getElementById("ptv-btn");
+    ptvBtn.addEventListener('click', () => {
+        console.log("ptv!!!");
+    });
+    var bikeBtn = document.getElementById("bike-btn");
+    bikeBtn.addEventListener('click', () => {
+        console.log("bike!!!");
+    });
+    var closeBtn = document.getElementById("close-btn");
+    closeBtn.addEventListener('click', () => {
+        // console.log("close!!!");
+        detailPanel.hidden = true;
+    });
+
 
     map.on('load', function () {
         const images = [
@@ -119,9 +140,6 @@
                         el.hidden = true;
                         el.id = x.properties.Feature_Na;
                         el.addEventListener('click', (e) => {
-                            // console.log(e.path);
-                            // console.log(e.path[1]);
-                            // console.log(e.path[1].id);
                             var detailTitle = document.getElementById("detailTitle");
                             detailTitle.innerHTML = '<h2>' + x.properties.Feature_Na + '</h2>';
                             detailPanel.hidden = false;
@@ -136,21 +154,9 @@
             }
         });
 
-        var parkBtn = document.getElementById("park-btn");
-        parkBtn.addEventListener('click', () => {
-            console.log("park!!!");
-        });
-        var ptvBtn = document.getElementById("ptv-btn");
-        ptvBtn.addEventListener('click', () => {
-            console.log("ptv!!!");
-        });
-        var bikeBtn = document.getElementById("bike-btn");
-        bikeBtn.addEventListener('click', () => {
-            console.log("bike!!!");
-        });
+
 
     });
-
 
 
     // map.addControl(
