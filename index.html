@@ -82,10 +82,8 @@
                 var features = map.querySourceFeatures('poi', {
                     sourceLayer: 'Melbourne_POIs_MGA-0lenk4'
                 });
-                console.log(features);
                 features.forEach(x => {
                     var popup = new mapboxgl.Popup({offset: 25}).setText(x.properties.Feature_Na);
-                    // create a HTML element for each feature
                     var el = document.createElement('div');
                     var im = new Image();
                     im.src = './images/poi/Melbourne Central.jpeg';
@@ -94,8 +92,6 @@
                     el.className = 'marker';
                     el.hidden = true;
                     markerArr.push(el);
-                    console.log(x.geometry.coordinates);
-                    // make a marker for each feature and add to the map
                     new mapboxgl.Marker(el)
                         .setLngLat(x.geometry.coordinates)
                         .setPopup(popup)
@@ -113,25 +109,6 @@
     //     }),
     //     'top-left'
     // );
-
-
-
-    // var MelbourneCentral = [144.9628, -37.8102];
-
-    // create the popup
-    // var popupArr = [];
-    // var popup = new mapboxgl.Popup({offset: 25}).setText('Construction on the Washington Monument began in 1848.');
-
-    // create DOM element for the marker
-    // var el = document.createElement('div');
-    // el.className = 'marker';
-    // el.hidden = true;
-
-    // // create the marker
-    // new mapboxgl.Marker(el)
-    //     .setLngLat(MelbourneCentral)
-    //     .setPopup(popup) // sets a popup on this marker
-    //     .addTo(map);
 
     map.on('zoom', function () {
         if (map.getZoom() <= 15.3) {
