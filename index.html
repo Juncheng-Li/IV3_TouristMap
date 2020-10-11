@@ -93,7 +93,7 @@
         });
 
         map.addLayer({
-            id: 'museum points',
+            id: 'icons',
             type: 'symbol',
             maxzoom: 15.9,
             source: 'poi',
@@ -153,9 +153,12 @@
                 });
             }
         });
+    });
 
-
-
+    map.on('click', 'icons', function(e) {
+        var detailTitle = document.getElementById("detailTitle");
+        detailTitle.innerHTML = '<h2>' + e.features[0].properties.Feature_Na + '</h2>';
+        detailPanel.hidden = false;
     });
 
 
