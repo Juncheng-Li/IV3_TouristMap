@@ -140,10 +140,10 @@
                         el.hidden = true;
                         el.id = x.properties.Feature_Na;
                         el.addEventListener('click', (e) => {
+                            //set detail panel title
                             var detailTitle = document.getElementById("detailTitle");
                             detailTitle.innerHTML = '<h2>' + x.properties.Feature_Na + '</h2>';
-                            // var placeImg = document.getElementById("placeImage");
-                            // placeImg.src = './images/poi/' + x.properties.Feature_Na + '.jpg';
+                            //set detail panel image
                             var placeImg = document.getElementById("place");
                             placeImg.innerHTML = "<img id = \"placeImage\" src=\"./images/poi/" + x.properties.Feature_Na + ".jpg\" alt=\"poi\">";
                             detailPanel.hidden = false;
@@ -160,8 +160,12 @@
     });
 
     map.on('click', 'icons', function(e) {
+        //set detail panel title
         var detailTitle = document.getElementById("detailTitle");
         detailTitle.innerHTML = '<h2>' + e.features[0].properties.Feature_Na + '</h2>';
+        //set detail panel image
+        var placeImg = document.getElementById("place");
+        placeImg.innerHTML = "<img id = \"placeImage\" src=\"./images/poi/" + e.features[0].properties.Feature_Na + ".jpg\" alt=\"poi\">";
         detailPanel.hidden = false;
     });
 
