@@ -15,29 +15,32 @@
         href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css"
         type="text/css"
 />
-<div id="map"></div>
-<div class="map-overlay" id="detailPanel">
-    <button id="close-btn">x</button>
-    <div id="detailTitle">
-        <h3>This is</h3>
-    </div>
-    <div id="place">
-        <img id = "placeImage" src="./images/poi/Melbourne%20Central.jpg" alt="poi">
-    </div>
+<div>
+    <div id="map"></div>
 
-    <div>
-        <p id="address">Address: 100 Swanston St, Melbourne 3000</p>
-        <p id="openHour">Open hours: 10:00 - 18:00</p>
-    </div>
-    <div class="advanceInfo">
-        <p class="infoButton ">
-            <button class="filters" id="park-btn" style="background-image: url(./images/other/icons8-parking-96.png)"></button>
-            <button class="filters" id="bike-btn" style="background-image: url(./images/other/bike.png)"></button>
-            <button class="filters" id="ptv-btn" style="background-image: url(./images/other/ptv.jpeg)"></button>
-        </p>
-    </div>
+    <div class="map-overlay" id="detailPanel">
+        <button id="close-btn">x</button>
+        <div id="detailTitle">
+            <h3>This is</h3>
+        </div>
+        <div id="place">
+            <img id = "placeImage" src="./images/poi/Melbourne%20Central.jpg" alt="poi">
+        </div>
 
+        <div>
+            <p id="address">Address: 100 Swanston St, Melbourne 3000</p>
+            <p id="openHour">Open hours: 10:00 - 18:00</p>
+        </div>
+        <div class="advanceInfo">
+            <p class="infoButton ">
+                <button class="filters" id="park-btn" style="background-image: url(./images/other/icons8-parking-96.png)"></button>
+                <button class="filters" id="bike-btn" style="background-image: url(./images/other/bike.png)"></button>
+                <button class="filters" id="ptv-btn" style="background-image: url(./images/other/ptv.jpeg)"></button>
+            </p>
+        </div>
+    </div>
 </div>
+
 
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoieXVubmluZ2ciLCJhIjoiY2tldjl0ZmZoMjRoajJxcXYzNGU1M2p0aCJ9.30fp6J7Abr9VbS_ev_jYpA';
