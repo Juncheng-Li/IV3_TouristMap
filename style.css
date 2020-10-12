@@ -40,17 +40,36 @@ body {
     background-color: white;
 }
 
-#ptv-btn {
-    display: block;
-    width: 45px;
-    height: 45px;
+/*#ptv-btn {*/
+/*    display: block;*/
+/*    width: 45px;*/
+/*    height: 45px;*/
+/*    border-radius: 50%;*/
+/*    background-image: url(./images/other/ptv.jpeg);*/
+/*    background-size: cover;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*#park-btn {*/
+/*    display: block;*/
+/*    width: 40px;*/
+/*    height: 40px;*/
+/*    border-radius: 50%;*/
+/*    background-image: url(./images/other/park.jpeg);*/
+/*    background-size: cover;*/
+/*    cursor: pointer;*/
+/*    border: none;*/
+/*}*/
+
+.filters {
+    /*display: block;*/
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
-    background-image: url(./images/other/ptv.jpeg);
     background-size: cover;
     cursor: pointer;
+    border: none;
 }
-
-
 
 
 h2 {
