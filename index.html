@@ -24,17 +24,19 @@
     <div id="place">
         <img id = "placeImage" src="./images/poi/Melbourne%20Central.jpg" alt="poi">
     </div>
-    <br>
+
+    <div>
+        <p id="address">Address: 100 Swanston St, Melbourne 3000</p>
+        <p id="openHour">Open hours: 10:00 - 18:00</p>
+    </div>
     <div class="advanceInfo">
         <p class="infoButton ">
-<!--            <img class="nav-btn" id="park-btn" src="images/other/parkSign.png" alt="">-->
-<!--            <img class="nav-btn" id="ptv-btn" src="images/other/ptv.jpeg" alt="">-->
-<!--            <img class="nav-btn" id="bike-btn" src="images/other/bike.png" alt="">-->
-            <button class="filters" id="park-btn" style="background-image: url(./images/other/park.jpeg)"></button>
+            <button class="filters" id="park-btn" style="background-image: url(./images/other/icons8-parking-96.png)"></button>
             <button class="filters" id="bike-btn" style="background-image: url(./images/other/bike.png)"></button>
             <button class="filters" id="ptv-btn" style="background-image: url(./images/other/ptv.jpeg)"></button>
         </p>
     </div>
+
 </div>
 
 <script>
@@ -75,6 +77,7 @@
             {imageUrl: './images/icon/museum.png', id: 'museum'},
             {imageUrl: './images/icon/church.png', id: 'church'},
             {imageUrl: './images/icon/outdoor.png', id: 'outdoor'},
+            {imageUrl: './images/icon/study.png', id: 'study'},
         ];
         images.forEach(img => {
             map.loadImage(img.imageUrl, function (error, res) {
@@ -107,6 +110,7 @@
                         ['Art Gallery/Museum', 'museum'],
                         ['Church', 'church'],
                         ['Informal Outdoor Facility (Park/Garden/Reserve)', 'outdoor'],
+                        ['Tertiary (University)', 'study'],
                     ]
                 },
                 'icon-size': 0.08,
