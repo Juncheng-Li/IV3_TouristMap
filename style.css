@@ -23,7 +23,7 @@ body {
 
 #detailPanel {
     top: 0;
-    left: 20px;
+    right: 10px;
     height: 400px;
     margin-top: 20px;
     width: 300px;
@@ -32,6 +32,26 @@ body {
 #detailTitle {
     margin-top: 20px;
 }
+
+#close-btn {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: white;
+}
+
+#ptv-btn {
+    display: block;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-image: url(./images/other/ptv.jpeg);
+    background-size: cover;
+    cursor: pointer;
+}
+
+
+
 
 h2 {
     margin: 10px;
@@ -61,8 +81,6 @@ p {
     height: 40px;
     border: none;
 }
-
-
 
 
 .marker > img {
