@@ -194,6 +194,9 @@
         //set detail panel title
         var detailTitle = document.getElementById("detailTitle");
         detailTitle.innerHTML = '<h2>' + poi.properties.Feature_Na + '</h2>';
+        //set subtitle
+        var detailSubtitle = document.getElementById("subtitle");
+        detailSubtitle.innerHTML = '<h4>' + poi.properties.Sub_Theme + '</h4>';
         //set detail panel image
         var placeImg = document.getElementById("place");
         placeImg.innerHTML = "<img id = \"placeImage\" src=\"./images/poi/" + poi.properties.Feature_Na + ".jpg\" alt=\"poi\">";
