@@ -24,7 +24,7 @@
             <h4 id="subtitle">subtitle</h4>
         </div>
         <div id="place">
-            <img id = "placeImage" src="./images/poi/Melbourne%20Central.jpg" alt="poi">
+            <img id="placeImage" src="./images/poi/Melbourne%20Central.jpg" alt="poi">
         </div>
 
         <div>
@@ -39,7 +39,8 @@
         </div>
         <div class="advanceInfo">
             <p class="infoButton ">
-                <button class="filters" id="park-btn" style="background-image: url(./images/other/icons8-parking-96.png)"></button>
+                <button class="filters" id="park-btn"
+                        style="background-image: url(./images/other/icons8-parking-96.png)"></button>
                 <button class="filters" id="bike-btn" style="background-image: url(./images/other/bike.png)"></button>
                 <button class="filters" id="ptv-btn" style="background-image: url(./images/other/ptv.jpeg)"></button>
             </p>
@@ -100,73 +101,122 @@
             })
         });
 
-        map.addSource('poiJSON', {
-            'type': 'geojson',
-            'data': 'datasets/Melbourne_POIs_MGA.geojson'
-        });
-
         map.addSource('poi', {
             type: 'vector',
             url: 'mapbox://yunningg.d15riytj'
         });
 
-        map.addLayer({
-            id: 'icons',
-            type: 'symbol',
-            maxzoom: 15.9,
-            source: 'poi',
-            layout: {
-                'visibility': 'visible',
-                // 'icon-image': 'museum',
-                'icon-image': {
-                    property: 'Sub_Theme',
-                    type: 'categorical',
-                    stops: [
-                        ['Art Gallery/Museum', 'museum'],
-                        ['Aquarium', 'museum'],
-                        ['Library', 'museum'],
+        var classifications = ['museum', 'church', 'shop', 'nature','theatre','seaport','indoor','sport','building'];
 
-                        ['Church', 'church'],
-                        ['Synagogue', 'church'],
+        classifications.forEach(classification => {
+            var layerID = 'poi-' + classification;
 
-                        ['Department Store', 'shop'],
-                        ['Retail', 'shop'],
-                        ['Retail/Office', 'shop'],
-                        ['Retail/Office/Carpark', 'shop'],
-                        ['Retail/Office/Residential/Carpark', 'shop'],
-                        ['Retail/Residential', 'shop'],
-                        ['Store Yard', 'shop'],
+            console.log(classification)
 
-                        ['Informal Outdoor Facility (Park/Garden/Reserve)', 'nature'],
-                        ['Outdoor Recreation Facility (Zoo, Golf Course)', 'nature'],
-
-                        ['Theatre Live', 'theatre'],
-
-                        ['Marina', 'seaport'],
-                        ['Transport Terminal', 'seaport'],
-
-                        ['Indoor Recreation Facility', 'indoor'],
-                        ['Cinema', 'indoor'],
-
-                        ['Function/Conference/Exhibition Centre', 'building'],
-                        ['Observation Tower/Wheel', 'building'],
-                        ['Public Buildings', 'building'],
-                        ['Visitor Centre', 'building'],
-
-                        ['Gymnasium/Health Club', 'sport'],
-                        ['Major Sports & Recreation Facility', 'sport'],
-
-                    ]
-                },
-                'icon-size': 0.18,
-                'icon-allow-overlap': true
-            },
-            'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
+            if (!map.getLayer(layerID)) {
+                map.addLayer({
+                    id: layerID,
+                    type: 'symbol',
+                    maxzoom: 15.9,
+                    source: 'poi',
+                    layout: {
+                        'visibility': 'visible',
+                        'icon-image': {
+                            property: 'Sub_Theme',
+                            type: 'categorical',
+                            stops: getRelativeStops(layerID)
+                        },
+                        'icon-size': 0.18,
+                        'icon-allow-overlap': true
+                    },
+                    filter: ['in', 'Sub_Theme'].concat(getFilterParameter(layerID)),
+                    'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
+                });
+            }
         });
+
+        function getRelativeStops(layerID) {
+            var stops
+
+            if (layerID === 'poi-museum') {
+                stops = [['Art Gallery/Museum', 'museum'],
+                    ['Aquarium', 'museum'],
+                    ['Library', 'museum'],]
+            } else if (layerID === 'poi-church') {
+                stops = [['Church', 'church'],
+                    ['Synagogue', 'church'],]
+            } else if (layerID === 'poi-shop') {
+                stops = [['Department Store', 'shop'],
+                    ['Retail', 'shop'],
+                    ['Retail/Office', 'shop'],
+                    ['Retail/Office/Carpark', 'shop'],
+                    ['Retail/Office/Residential/Carpark', 'shop'],
+                    ['Retail/Residential', 'shop'],
+                    ['Store Yard', 'shop'],]
+            } else if (layerID === 'poi-nature') {
+                stops = [['Informal Outdoor Facility (Park/Garden/Reserve)', 'nature'],
+                    ['Outdoor Recreation Facility (Zoo, Golf Course)', 'nature'],]
+            } else if (layerID === 'poi-theatre') {
+                stops = [['Theatre Live', 'theatre'],
+                ]
+            } else if (layerID === 'poi-seaport') {
+                stops = [['Marina', 'seaport'],
+                    ['Transport Terminal', 'seaport'],]
+            } else if (layerID === 'poi-indoor') {
+                stops = [['Indoor Recreation Facility', 'indoor'],
+                    ['Cinema', 'indoor'],]
+            } else if (layerID === 'poi-building') {
+                stops = [['Function/Conference/Exhibition Centre', 'building'],
+                    ['Observation Tower/Wheel', 'building'],
+                    ['Public Buildings', 'building'],
+                    ['Visitor Centre', 'building'],]
+            } else if (layerID === 'poi-sport') {
+                stops = [['Gymnasium/Health Club', 'sport'],
+                    ['Major Sports & Recreation Facility', 'sport'],]
+            }
+            return stops;
+        }
+
+        function getFilterParameter(layerID){
+            var filter
+
+            if (layerID === 'poi-museum') {
+                filter = ['Art Gallery/Museum', 'Aquarium','Library']
+
+            } else if (layerID === 'poi-church') {
+                filter = ['Church', 'Synagogue']
+
+            } else if (layerID === 'poi-shop') {
+                filter = ['Department Store', 'Retail','Retail/Office','Retail/Office/Carpark',
+                    'Retail/Office/Residential/Carpark','Retail/Residential','Store Yard']
+
+            } else if (layerID === 'poi-nature') {
+                filter = ['Informal Outdoor Facility (Park/Garden/Reserve)', 'Outdoor Recreation Facility (Zoo, Golf Course)']
+
+            } else if (layerID === 'poi-theatre') {
+                filter = ['Theatre Live']
+
+            } else if (layerID === 'poi-seaport') {
+                filter = ['Marina', 'Transport Terminal']
+
+            } else if (layerID === 'poi-indoor') {
+                filter = ['Indoor Recreation Facility', 'Cinema']
+
+            } else if (layerID === 'poi-building') {
+                filter = ['Function/Conference/Exhibition Centre', 'Observation Tower/Wheel','Public Buildings',
+                    'Visitor Centre']
+
+            } else if (layerID === 'poi-sport') {
+                filter = ['Gymnasium/Health Club', 'Major Sports & Recreation Facility']
+
+            }
+            return filter;
+        }
+
 
 
         //mark and popup
-        map.on("sourcedata", function(e) {
+        map.on("sourcedata", function (e) {
             if (map.getSource('poi') && map.isSourceLoaded('poi')) {
                 console.log('source loaded!');
                 var features = map.querySourceFeatures('poi', {
@@ -202,7 +252,7 @@
         });
     });
 
-    map.on('click', 'icons', function(e) {
+    map.on('click', 'icons', function (e) {
         showDetailPanel(e.features[0]);
     });
 
