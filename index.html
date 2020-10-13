@@ -49,6 +49,7 @@
 
 
 <script>
+    //initialize
     mapboxgl.accessToken = 'pk.eyJ1IjoieXVubmluZ2ciLCJhIjoiY2tldjl0ZmZoMjRoajJxcXYzNGU1M2p0aCJ9.30fp6J7Abr9VbS_ev_jYpA';
     var map = new mapboxgl.Map({
         container: 'map',
@@ -61,7 +62,7 @@
     const detailPanel = document.getElementById("detailPanel");
     detailPanel.hidden = true;
 
-
+    // initialize buttons on detail panel
     var parkBtn = document.getElementById("park-btn");
     parkBtn.addEventListener('click', () => {
         console.log("park!!!");
@@ -76,12 +77,12 @@
     });
     var closeBtn = document.getElementById("close-btn");
     closeBtn.addEventListener('click', () => {
-        // console.log("close!!!");
         detailPanel.hidden = true;
     });
 
 
     map.on('load', function () {
+        //load images
         const images = [
             {imageUrl: './images/icon/museum.png', id: 'museum'},
             {imageUrl: './images/icon/church.png', id: 'church'},
@@ -94,16 +95,13 @@
             })
         });
 
-        map.addSource('poiJSON', {
-            'type': 'geojson',
-            'data': 'datasets/Melbourne_POIs_MGA.geojson'
-        });
-
+        // add POI data source
         map.addSource('poi', {
             type: 'vector',
             url: 'mapbox://yunningg.d15riytj'
         });
 
+        // add POI small-icon layer
         map.addLayer({
             id: 'icons',
             type: 'symbol',
@@ -128,14 +126,11 @@
             'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
         });
 
-
-        //mark and popup
+        //add Marker for each POI
         map.on("sourcedata", function(e) {
             if (map.getSource('poi') && map.isSourceLoaded('poi')) {
                 console.log('source loaded!');
-                var features = map.querySourceFeatures('poi', {
-                    sourceLayer: 'Melbourne_POIs_MGA-0lenk4'
-                });
+                var features = map.querySourceFeatures('poi', {sourceLayer: 'Melbourne_POIs_MGA-0lenk4'});
                 features.forEach(x => {
                     if (x.properties.Theme !== "Transport") {
                         // popup
@@ -158,7 +153,6 @@
                         markerArr.push(el);
                         new mapboxgl.Marker(el)
                             .setLngLat(x.geometry.coordinates)
-                            // .setPopup(popup)
                             .addTo(map);
                     }
                 });
@@ -166,6 +160,7 @@
         });
     });
 
+    // Show detail panel on clicking small POI icons
     map.on('click', 'icons', function(e) {
         showDetailPanel(e.features[0], e.features[0].properties.Feature_Na.replace(":", "-"));
     });
@@ -178,6 +173,7 @@
     //     'top-left'
     // );
 
+    // Change POI icons based on zoom level
     map.on('zoom', function () {
         if (map.getZoom() <= 15.9) {
             markerArr.forEach(el => {
@@ -190,6 +186,7 @@
         }
     });
 
+    //function for setting up and displaying detail panel
     function showDetailPanel(poi, imgName) {
         //set detail panel title
         var detailTitle = document.getElementById("detailTitle");
