@@ -85,8 +85,14 @@
         const images = [
             {imageUrl: './images/icon/museum.png', id: 'museum'},
             {imageUrl: './images/icon/church.png', id: 'church'},
-            {imageUrl: './images/icon/outdoor.png', id: 'outdoor'},
-            {imageUrl: './images/icon/study.png', id: 'study'},
+            {imageUrl: './images/icon/shop.png', id: 'shop'},
+            {imageUrl: './images/icon/nature.png', id: 'nature'},
+            {imageUrl: './images/icon/theatre.png', id: 'theatre'},
+            {imageUrl: './images/icon/seaport.png', id: 'seaport'},
+            {imageUrl: './images/icon/indoor.png', id: 'indoor'},
+            {imageUrl: './images/icon/building.png', id: 'building'},
+            {imageUrl: './images/icon/sport.png', id: 'sport'},
+
         ];
         images.forEach(img => {
             map.loadImage(img.imageUrl, function (error, res) {
@@ -117,12 +123,42 @@
                     type: 'categorical',
                     stops: [
                         ['Art Gallery/Museum', 'museum'],
+                        ['Aquarium', 'museum'],
+                        ['Library', 'museum'],
+
                         ['Church', 'church'],
-                        ['Informal Outdoor Facility (Park/Garden/Reserve)', 'outdoor'],
-                        ['Tertiary (University)', 'study'],
+                        ['Synagogue', 'church'],
+
+                        ['Department Store', 'shop'],
+                        ['Retail', 'shop'],
+                        ['Retail/Office', 'shop'],
+                        ['Retail/Office/Carpark', 'shop'],
+                        ['Retail/Office/Residential/Carpark', 'shop'],
+                        ['Retail/Residential', 'shop'],
+                        ['Store Yard', 'shop'],
+
+                        ['Informal Outdoor Facility (Park/Garden/Reserve)', 'nature'],
+                        ['Outdoor Recreation Facility (Zoo, Golf Course)', 'nature'],
+
+                        ['Theatre Live', 'theatre'],
+
+                        ['Marina', 'seaport'],
+                        ['Transport Terminal', 'seaport'],
+
+                        ['Indoor Recreation Facility', 'indoor'],
+                        ['Cinema', 'indoor'],
+
+                        ['Function/Conference/Exhibition Centre', 'building'],
+                        ['Observation Tower/Wheel', 'building'],
+                        ['Public Buildings', 'building'],
+                        ['Visitor Centre', 'building'],
+
+                        ['Gymnasium/Health Club', 'sport'],
+                        ['Major Sports & Recreation Facility', 'sport'],
+
                     ]
                 },
-                'icon-size': 0.08,
+                'icon-size': 0.18,
                 'icon-allow-overlap': true
             },
             'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
