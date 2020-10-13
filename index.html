@@ -133,6 +133,10 @@
                     'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
                 });
             }
+
+            map.on('click', layerID, function (e) {
+                showDetailPanel(e.features[0]);
+            });
         });
 
         function getRelativeStops(layerID) {
@@ -250,10 +254,6 @@
                 });
             }
         });
-    });
-
-    map.on('click', 'icons', function (e) {
-        showDetailPanel(e.features[0]);
     });
 
 
