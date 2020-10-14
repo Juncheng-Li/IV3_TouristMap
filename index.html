@@ -53,12 +53,12 @@
             <a href="#" class="layerFilterBtn" id="shop-btn" style="background-image: url(./images/icon/shop.png) ">Shopping</a>
             <a href="#" class="layerFilterBtn" id="nature-btn" style="background-image: url(./images/icon/nature.png) ">Park</a>
             <a href="#" class="layerFilterBtn" id="theatre-btn" style="background-image: url(./images/icon/theatre.png) ">Theatre</a>
-            <a href="#" class="layerFilterBtn" id="seaport-btn" style="background-image: url(images/icon/harbor.png) ">Harbor</a>
+            <a href="#" class="layerFilterBtn" id="harbor-btn" style="background-image: url(images/icon/harbor.png) ">Harbor</a>
             <a href="#" class="layerFilterBtn" id="indoor-btn" style="background-image: url(./images/icon/indoor.png) ">Indoor</a>
             <a href="#" class="layerFilterBtn" id="building-btn" style="background-image: url(./images/icon/building.png) ">Building</a>
             <a href="#" class="layerFilterBtn" id="sport-btn" style="background-image: url(./images/icon/sport.png) ">Sport</a>
         </nav>
-        <a href="#" id="filter-btn">SELECT WHAT TO SEE</a>
+        <a href="#" id="filter-btn">SELECT WHAT TO SEE  ⬆</a>
     </div>
 </div>
 
@@ -100,7 +100,7 @@
     var shopBtn = document.getElementById("shop-btn");
     var natureBtn = document.getElementById("nature-btn");
     var theatreBtn = document.getElementById("theatre-btn");
-    var seaportBtn = document.getElementById("seaport-btn");
+    var harborBtn = document.getElementById("harbor-btn");
     var indoorBtn = document.getElementById("indoor-btn");
     var sportBtn = document.getElementById("sport-btn");
     var buildingBtn = document.getElementById("building-btn");
@@ -115,7 +115,7 @@
         }
     };
 
-    var classifications = ['museum', 'church', 'shop', 'nature','theatre','seaport','indoor','sport','building'];
+    var classifications = ['museum', 'church', 'shop', 'nature','theatre','harbor','indoor','sport','building'];
 
     map.on('load', function () {
         const images = [
@@ -124,7 +124,7 @@
             {imageUrl: './images/icon/shop.png', id: 'shop'},
             {imageUrl: './images/icon/nature.png', id: 'nature'},
             {imageUrl: './images/icon/theatre.png', id: 'theatre'},
-            {imageUrl: './images/icon/seaport.png', id: 'seaport'},
+            {imageUrl: './images/icon/harbor.png', id: 'harbor'},
             {imageUrl: './images/icon/indoor.png', id: 'indoor'},
             {imageUrl: './images/icon/building.png', id: 'building'},
             {imageUrl: './images/icon/sport.png', id: 'sport'},
@@ -141,7 +141,7 @@
             url: 'mapbox://yunningg.d15riytj'
         });
 
-        var classifications = ['museum', 'church', 'shop', 'nature','theatre','seaport','indoor','sport','building'];
+        var classifications = ['museum', 'church', 'shop', 'nature','theatre','harbor','indoor','sport','building'];
 
         classifications.forEach(classification => {
             var layerID = 'poi-' + classification;
@@ -215,9 +215,9 @@
             } else if (layerID === 'poi-theatre') {
                 stops = [['Theatre Live', 'theatre'],
                 ]
-            } else if (layerID === 'poi-seaport') {
-                stops = [['Marina', 'seaport'],
-                    ['Transport Terminal', 'seaport'],]
+            } else if (layerID === 'poi-harbor') {
+                stops = [['Marina', 'harbor'],
+                    ['Transport Terminal', 'harbor'],]
             } else if (layerID === 'poi-indoor') {
                 stops = [['Indoor Recreation Facility', 'indoor'],
                     ['Cinema', 'indoor'],]
@@ -252,7 +252,7 @@
             } else if (layerID === 'poi-theatre') {
                 filter = ['Theatre Live']
 
-            } else if (layerID === 'poi-seaport') {
+            } else if (layerID === 'poi-harbor') {
                 filter = ['Marina', 'Transport Terminal']
 
             } else if (layerID === 'poi-indoor') {
@@ -287,17 +287,17 @@
             } else if (layerID === 'poi-theatre') {
                 buttonName = 'theatreBtn'
 
-            } else if (layerID === 'poi-seaport') {
-                buttonName = 'seaportBtn'
+            } else if (layerID === 'poi-harbor') {
+                buttonName = 'harborBtn'
 
             } else if (layerID === 'poi-indoor') {
                 buttonName = 'indoorBtn'
 
             } else if (layerID === 'poi-building') {
-                buttonName = 'sportBtn'
+                buttonName = 'buildingBtn'
 
             } else if (layerID === 'poi-sport') {
-                buttonName = 'buildingBtn'
+                buttonName = 'sportBtn'
 
             }
             return buttonName;
@@ -341,6 +341,7 @@
         });
     });
 
+    map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
     // map.addControl(
     //     new MapboxDirections({
