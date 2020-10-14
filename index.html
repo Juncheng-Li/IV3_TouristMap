@@ -46,6 +46,20 @@
             </p>
         </div>
     </div>
+    <div class="layerFilterPanel" id="layerFilterPanel">
+        <nav id="layerFilterList">
+            <a href="#" class="layerFilterBtn" id="museum-btn">Art Gallery, Museum</a>
+            <a href="#" class="layerFilterBtn" id="church-btn">church</a>
+            <a href="#" class="layerFilterBtn" id="shop-btn">shop</a>
+            <a href="#" class="layerFilterBtn" id="nature-btn">nature</a>
+            <a href="#" class="layerFilterBtn" id="theatre-btn">theatre</a>
+            <a href="#" class="layerFilterBtn" id="seaport-btn">seaport</a>
+            <a href="#" class="layerFilterBtn" id="indoor-btn">indoor</a>
+            <a href="#" class="layerFilterBtn" id="building-btn">building</a>
+            <a href="#" class="layerFilterBtn" id="sport-btn">sport</a>
+        </nav>
+        <a href="#" id="filter-btn"><h3>SELECT WHAT TO SEE</h3></a>
+    </div>
 </div>
 
 
@@ -81,6 +95,27 @@
         detailPanel.hidden = true;
     });
 
+    var museumBtn = document.getElementById("museum-btn");
+    var churchBtn = document.getElementById("church-btn");
+    var shopBtn = document.getElementById("shop-btn");
+    var natureBtn = document.getElementById("nature-btn");
+    var theatreBtn = document.getElementById("theatre-btn");
+    var seaportBtn = document.getElementById("seaport-btn");
+    var indoorBtn = document.getElementById("indoor-btn");
+    var sportBtn = document.getElementById("sport-btn");
+    var buildingBtn = document.getElementById("building-btn");
+
+    var layerFilterList = document.getElementById("layerFilterList");
+    var filterBtn = document.getElementById("filter-btn");
+    filterBtn.onclick = function (e) {
+        if (layerFilterList.style.display === "none"){
+            layerFilterList.style.display = "block";
+        }else {
+            layerFilterList.style.display = "none";
+        }
+    };
+
+    var classifications = ['museum', 'church', 'shop', 'nature','theatre','seaport','indoor','sport','building'];
 
     map.on('load', function () {
         const images = [
@@ -132,11 +167,28 @@
                     filter: ['in', 'Sub_Theme'].concat(getFilterParameter(layerID)),
                     'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
                 });
-            }
 
-            map.on('click', layerID, function (e) {
-                showDetailPanel(e.features[0]);
-            });
+                map.on('click', layerID, function (e) {
+                    showDetailPanel(e.features[0]);
+                });
+
+                var buttonName = getButtonName(layerID)
+
+                eval(buttonName).onclick = function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    let visibility = map.getLayoutProperty(layerID, 'visibility');
+
+                    if (visibility !== 'none') {
+                        map.setLayoutProperty(layerID, 'visibility', 'none');
+                        this.className = 'disable';
+                    } else {
+                        this.className = 'active';
+                        map.setLayoutProperty(layerID, 'visibility', 'visible');
+                    }
+                };
+            }
         });
 
         function getRelativeStops(layerID) {
@@ -217,9 +269,42 @@
             return filter;
         }
 
+        function getButtonName(layerID){
+            var buttonName
+
+            if (layerID === 'poi-museum') {
+                buttonName = 'museumBtn'
+
+            } else if (layerID === 'poi-church') {
+                buttonName = 'churchBtn'
+
+            } else if (layerID === 'poi-shop') {
+                buttonName = 'shopBtn'
+
+            } else if (layerID === 'poi-nature') {
+                buttonName = 'natureBtn'
+
+            } else if (layerID === 'poi-theatre') {
+                buttonName = 'theatreBtn'
+
+            } else if (layerID === 'poi-seaport') {
+                buttonName = 'seaportBtn'
+
+            } else if (layerID === 'poi-indoor') {
+                buttonName = 'indoorBtn'
+
+            } else if (layerID === 'poi-building') {
+                buttonName = 'sportBtn'
+
+            } else if (layerID === 'poi-sport') {
+                buttonName = 'buildingBtn'
+
+            }
+            return buttonName;
+        }
 
 
-        //mark and popup
+        // mark and popup
         map.on("sourcedata", function (e) {
             if (map.getSource('poi') && map.isSourceLoaded('poi')) {
                 console.log('source loaded!');
