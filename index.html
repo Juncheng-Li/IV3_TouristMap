@@ -24,7 +24,7 @@
             <h4 id="subtitle">subtitle</h4>
         </div>
         <div id="place">
-            <img id = "placeImage" src="./images/poi/Melbourne%20Central.jpg" alt="poi">
+            <img id="placeImage" src="./images/poi/Melbourne%20Central.jpg" alt="poi">
         </div>
 
         <div>
@@ -39,11 +39,26 @@
         </div>
         <div class="advanceInfo">
             <p class="infoButton ">
-                <button class="filters" id="park-btn" style="background-image: url(./images/other/icons8-parking-96.png)"></button>
+                <button class="filters" id="park-btn"
+                        style="background-image: url(./images/other/icons8-parking-96.png)"></button>
                 <button class="filters" id="bike-btn" style="background-image: url(./images/other/bike.png)"></button>
                 <button class="filters" id="ptv-btn" style="background-image: url(./images/other/ptv.jpeg)"></button>
             </p>
         </div>
+    </div>
+    <div class="layerFilterPanel" id="layerFilterPanel">
+        <nav id="layerFilterList">
+            <a href="#" class="layerFilterBtn" id="museum-btn" style="background-image: url(./images/icon/museum.png) ">Museum</a>
+            <a href="#" class="layerFilterBtn" id="church-btn" style="background-image: url(./images/icon/church.png) ">Church</a>
+            <a href="#" class="layerFilterBtn" id="shop-btn" style="background-image: url(./images/icon/shop.png) ">Shopping</a>
+            <a href="#" class="layerFilterBtn" id="nature-btn" style="background-image: url(./images/icon/nature.png) ">Park</a>
+            <a href="#" class="layerFilterBtn" id="theatre-btn" style="background-image: url(./images/icon/theatre.png) ">Theatre</a>
+            <a href="#" class="layerFilterBtn" id="harbor-btn" style="background-image: url(images/icon/harbor.png) ">Harbor</a>
+            <a href="#" class="layerFilterBtn" id="indoor-btn" style="background-image: url(./images/icon/indoor.png) ">Indoor</a>
+            <a href="#" class="layerFilterBtn" id="building-btn" style="background-image: url(./images/icon/building.png) ">Building</a>
+            <a href="#" class="layerFilterBtn" id="sport-btn" style="background-image: url(./images/icon/sport.png) ">Sport</a>
+        </nav>
+        <a href="#" id="filter-btn">SELECT WHAT TO SEE  ⬆</a>
     </div>
 </div>
 
@@ -80,6 +95,27 @@
         detailPanel.hidden = true;
     });
 
+    var museumBtn = document.getElementById("museum-btn");
+    var churchBtn = document.getElementById("church-btn");
+    var shopBtn = document.getElementById("shop-btn");
+    var natureBtn = document.getElementById("nature-btn");
+    var theatreBtn = document.getElementById("theatre-btn");
+    var harborBtn = document.getElementById("harbor-btn");
+    var indoorBtn = document.getElementById("indoor-btn");
+    var sportBtn = document.getElementById("sport-btn");
+    var buildingBtn = document.getElementById("building-btn");
+
+    var layerFilterList = document.getElementById("layerFilterList");
+    var filterBtn = document.getElementById("filter-btn");
+    filterBtn.onclick = function (e) {
+        if (layerFilterList.style.display === "none"){
+            layerFilterList.style.display = "block";
+        }else {
+            layerFilterList.style.display = "none";
+        }
+    };
+
+    var classifications = ['museum', 'church', 'shop', 'nature','theatre','harbor','indoor','sport','building'];
 
     map.on('load', function () {
         const images = [
@@ -88,7 +124,7 @@
             {imageUrl: './images/icon/shop.png', id: 'shop'},
             {imageUrl: './images/icon/nature.png', id: 'nature'},
             {imageUrl: './images/icon/theatre.png', id: 'theatre'},
-            {imageUrl: './images/icon/seaport.png', id: 'seaport'},
+            {imageUrl: './images/icon/harbor.png', id: 'harbor'},
             {imageUrl: './images/icon/indoor.png', id: 'indoor'},
             {imageUrl: './images/icon/building.png', id: 'building'},
             {imageUrl: './images/icon/sport.png', id: 'sport'},
@@ -100,73 +136,176 @@
             })
         });
 
-        map.addSource('poiJSON', {
-            'type': 'geojson',
-            'data': 'datasets/Melbourne_POIs_MGA.geojson'
-        });
-
         map.addSource('poi', {
             type: 'vector',
             url: 'mapbox://yunningg.d15riytj'
         });
 
-        map.addLayer({
-            id: 'icons',
-            type: 'symbol',
-            maxzoom: 15.9,
-            source: 'poi',
-            layout: {
-                'visibility': 'visible',
-                // 'icon-image': 'museum',
-                'icon-image': {
-                    property: 'Sub_Theme',
-                    type: 'categorical',
-                    stops: [
-                        ['Art Gallery/Museum', 'museum'],
-                        ['Aquarium', 'museum'],
-                        ['Library', 'museum'],
+        var classifications = ['museum', 'church', 'shop', 'nature','theatre','harbor','indoor','sport','building'];
 
-                        ['Church', 'church'],
-                        ['Synagogue', 'church'],
+        classifications.forEach(classification => {
+            var layerID = 'poi-' + classification;
 
-                        ['Department Store', 'shop'],
-                        ['Retail', 'shop'],
-                        ['Retail/Office', 'shop'],
-                        ['Retail/Office/Carpark', 'shop'],
-                        ['Retail/Office/Residential/Carpark', 'shop'],
-                        ['Retail/Residential', 'shop'],
-                        ['Store Yard', 'shop'],
+            console.log(classification)
 
-                        ['Informal Outdoor Facility (Park/Garden/Reserve)', 'nature'],
-                        ['Outdoor Recreation Facility (Zoo, Golf Course)', 'nature'],
+            if (!map.getLayer(layerID)) {
+                map.addLayer({
+                    id: layerID,
+                    type: 'symbol',
+                    maxzoom: 15.9,
+                    source: 'poi',
+                    layout: {
+                        'visibility': 'visible',
+                        'icon-image': {
+                            property: 'Sub_Theme',
+                            type: 'categorical',
+                            stops: getRelativeStops(layerID)
+                        },
+                        'icon-size': 0.18,
+                        'icon-allow-overlap': true
+                    },
+                    filter: ['in', 'Sub_Theme'].concat(getFilterParameter(layerID)),
+                    'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
+                });
 
-                        ['Theatre Live', 'theatre'],
+                map.on('click', layerID, function (e) {
+                    showDetailPanel(e.features[0]);
+                });
 
-                        ['Marina', 'seaport'],
-                        ['Transport Terminal', 'seaport'],
+                var buttonName = getButtonName(layerID)
 
-                        ['Indoor Recreation Facility', 'indoor'],
-                        ['Cinema', 'indoor'],
+                eval(buttonName).onclick = function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                        ['Function/Conference/Exhibition Centre', 'building'],
-                        ['Observation Tower/Wheel', 'building'],
-                        ['Public Buildings', 'building'],
-                        ['Visitor Centre', 'building'],
+                    let visibility = map.getLayoutProperty(layerID, 'visibility');
 
-                        ['Gymnasium/Health Club', 'sport'],
-                        ['Major Sports & Recreation Facility', 'sport'],
-
-                    ]
-                },
-                'icon-size': 0.18,
-                'icon-allow-overlap': true
-            },
-            'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
+                    if (visibility !== 'none') {
+                        map.setLayoutProperty(layerID, 'visibility', 'none');
+                        this.className = 'disable';
+                    } else {
+                        this.className = 'active';
+                        map.setLayoutProperty(layerID, 'visibility', 'visible');
+                    }
+                };
+            }
         });
 
+        function getRelativeStops(layerID) {
+            var stops
 
-        //mark and popup
-        map.on("sourcedata", function(e) {
+            if (layerID === 'poi-museum') {
+                stops = [['Art Gallery/Museum', 'museum'],
+                    ['Aquarium', 'museum'],
+                    ['Library', 'museum'],]
+            } else if (layerID === 'poi-church') {
+                stops = [['Church', 'church'],
+                    ['Synagogue', 'church'],]
+            } else if (layerID === 'poi-shop') {
+                stops = [['Department Store', 'shop'],
+                    ['Retail', 'shop'],
+                    ['Retail/Office', 'shop'],
+                    ['Retail/Office/Carpark', 'shop'],
+                    ['Retail/Office/Residential/Carpark', 'shop'],
+                    ['Retail/Residential', 'shop'],
+                    ['Store Yard', 'shop'],]
+            } else if (layerID === 'poi-nature') {
+                stops = [['Informal Outdoor Facility (Park/Garden/Reserve)', 'nature'],
+                    ['Outdoor Recreation Facility (Zoo, Golf Course)', 'nature'],]
+            } else if (layerID === 'poi-theatre') {
+                stops = [['Theatre Live', 'theatre'],
+                ]
+            } else if (layerID === 'poi-harbor') {
+                stops = [['Marina', 'harbor'],
+                    ['Transport Terminal', 'harbor'],]
+            } else if (layerID === 'poi-indoor') {
+                stops = [['Indoor Recreation Facility', 'indoor'],
+                    ['Cinema', 'indoor'],]
+            } else if (layerID === 'poi-building') {
+                stops = [['Function/Conference/Exhibition Centre', 'building'],
+                    ['Observation Tower/Wheel', 'building'],
+                    ['Public Buildings', 'building'],
+                    ['Visitor Centre', 'building'],]
+            } else if (layerID === 'poi-sport') {
+                stops = [['Gymnasium/Health Club', 'sport'],
+                    ['Major Sports & Recreation Facility', 'sport'],]
+            }
+            return stops;
+        }
+
+        function getFilterParameter(layerID){
+            var filter
+
+            if (layerID === 'poi-museum') {
+                filter = ['Art Gallery/Museum', 'Aquarium','Library']
+
+            } else if (layerID === 'poi-church') {
+                filter = ['Church', 'Synagogue']
+
+            } else if (layerID === 'poi-shop') {
+                filter = ['Department Store', 'Retail','Retail/Office','Retail/Office/Carpark',
+                    'Retail/Office/Residential/Carpark','Retail/Residential','Store Yard']
+
+            } else if (layerID === 'poi-nature') {
+                filter = ['Informal Outdoor Facility (Park/Garden/Reserve)', 'Outdoor Recreation Facility (Zoo, Golf Course)']
+
+            } else if (layerID === 'poi-theatre') {
+                filter = ['Theatre Live']
+
+            } else if (layerID === 'poi-harbor') {
+                filter = ['Marina', 'Transport Terminal']
+
+            } else if (layerID === 'poi-indoor') {
+                filter = ['Indoor Recreation Facility', 'Cinema']
+
+            } else if (layerID === 'poi-building') {
+                filter = ['Function/Conference/Exhibition Centre', 'Observation Tower/Wheel','Public Buildings',
+                    'Visitor Centre']
+
+            } else if (layerID === 'poi-sport') {
+                filter = ['Gymnasium/Health Club', 'Major Sports & Recreation Facility']
+
+            }
+            return filter;
+        }
+
+        function getButtonName(layerID){
+            var buttonName
+
+            if (layerID === 'poi-museum') {
+                buttonName = 'museumBtn'
+
+            } else if (layerID === 'poi-church') {
+                buttonName = 'churchBtn'
+
+            } else if (layerID === 'poi-shop') {
+                buttonName = 'shopBtn'
+
+            } else if (layerID === 'poi-nature') {
+                buttonName = 'natureBtn'
+
+            } else if (layerID === 'poi-theatre') {
+                buttonName = 'theatreBtn'
+
+            } else if (layerID === 'poi-harbor') {
+                buttonName = 'harborBtn'
+
+            } else if (layerID === 'poi-indoor') {
+                buttonName = 'indoorBtn'
+
+            } else if (layerID === 'poi-building') {
+                buttonName = 'buildingBtn'
+
+            } else if (layerID === 'poi-sport') {
+                buttonName = 'sportBtn'
+
+            }
+            return buttonName;
+        }
+
+
+        // mark and popup
+        map.on("sourcedata", function (e) {
             if (map.getSource('poi') && map.isSourceLoaded('poi')) {
                 console.log('source loaded!');
                 var features = map.querySourceFeatures('poi', {
@@ -202,10 +341,7 @@
         });
     });
 
-    map.on('click', 'icons', function(e) {
-        showDetailPanel(e.features[0]);
-    });
-
+    map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
     // map.addControl(
     //     new MapboxDirections({
