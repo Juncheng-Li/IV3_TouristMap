@@ -61,7 +61,17 @@
             <a href="#" class="layerFilterBtn" id="building-btn" style="background-image: url(./images/icon/building.png) ">Building</a>
             <a href="#" class="layerFilterBtn" id="sport-btn" style="background-image: url(./images/icon/sport.png) ">Sport</a>
         </nav>
-        <a href="#" id="filter-btn">SELECT WHAT TO SEE  ⬆</a>
+        <a href="#" id="filter-btn">SELECT WHAT TO SEE</a>
+    </div>
+    <div class="navigationBtnPanel">
+        <div class="navigationBtnIntro">
+            <span>Choose places in map</span>
+            <label class="switch">
+                <input type="checkbox" id="mapChoose-btn">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
     </div>
 </div>
 
@@ -82,7 +92,6 @@
 
     var detailPanel = document.getElementById("detailPanel");
     detailPanel.hidden = true;
-
 
     var parkBtn = document.getElementById("park-btn");
     parkBtn.addEventListener('click', () => {
@@ -114,13 +123,7 @@
 
     var layerFilterList = document.getElementById("layerFilterList");
     var filterBtn = document.getElementById("filter-btn");
-    filterBtn.onclick = function (e) {
-        if (layerFilterList.style.display === "none"){
-            layerFilterList.style.display = "block";
-        }else {
-            layerFilterList.style.display = "none";
-        }
-    };
+    var mapChooseBtn= document.getElementById('mapChoose-btn');
 
     var classifications = ['museum', 'church', 'shop', 'nature','theatre','harbor','indoor','sport','building'];
 
@@ -137,11 +140,8 @@
             url: 'mapbox://yunningg.d15riytj'
         });
 
-        var classifications = ['museum', 'church', 'shop', 'nature','theatre','harbor','indoor','sport','building'];
-
         classifications.forEach(classification => {
             var layerID = 'poi-' + classification;
-
             console.log(classification)
 
             if (!map.getLayer(layerID)) {
@@ -164,7 +164,6 @@
                 });
 
                 var buttonName = getButtonName(layerID)
-
                 eval(buttonName).onclick = function (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -186,22 +185,15 @@
 
     map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
-    // map.addControl(
-    //     new MapboxDirections({
-    //         accessToken: mapboxgl.accessToken
-    //     }),
-    //     'top-left'
-    // );
-
-
+    var direction = new MapboxDirections({
+        accessToken: mapboxgl.accessToken,
+        unit: 'metric',
+        profile: 'mapbox/driving',
+        interactive: false,
+        flyTo: false,
+    })
     map.addControl(
-        new MapboxDirections({
-            accessToken: mapboxgl.accessToken,
-            unit: 'metric',
-            profile: 'mapbox/driving',
-            interactive: true,
-            flyTo: false,
-        }),
+        direction,
         'top-left'
     );
 
@@ -228,6 +220,22 @@
             });
         }
     });
+
+    filterBtn.onclick = function (e) {
+        if (layerFilterList.style.display === "none"){
+            layerFilterList.style.display = "block";
+        }else {
+            layerFilterList.style.display = "none";
+        }
+    };
+
+    mapChooseBtn.onchange=function(event){
+        if (event.target.checked === true){
+            direction.interactive(true)
+        }else{
+            direction.interactive(false)
+        }
+    }
 
     function showDetailPanel(poi) {
         //set detail panel title
