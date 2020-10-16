@@ -68,11 +68,16 @@
 
 <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoieXVubmluZ2ciLCJhIjoiY2tldjl0ZmZoMjRoajJxcXYzNGU1M2p0aCJ9.30fp6J7Abr9VbS_ev_jYpA';
+    var bounds = [
+        [144.83410,-37.86618], // Southwest coordinates
+        [145.08700,-37.76697] // Northeast coordinates
+    ];
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [144.96, -37.81],
-        zoom: 14
+        center: [144.96055,-37.816575],
+        zoom: 12.8,
+        maxBounds: bounds
     });
 
     var detailPanel = document.getElementById("detailPanel");
@@ -179,7 +184,7 @@
 
     });
 
-    map.addControl(new mapboxgl.NavigationControl(), "top-right");
+    map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
     // map.addControl(
     //     new MapboxDirections({
@@ -187,6 +192,19 @@
     //     }),
     //     'top-left'
     // );
+
+
+    map.addControl(
+        new MapboxDirections({
+            accessToken: mapboxgl.accessToken,
+            unit: 'metric',
+            profile: 'mapbox/driving',
+            interactive: true,
+            flyTo: false,
+        }),
+        'top-left'
+    );
+
 
     map.on('zoom', function () {
         if (map.getZoom() <= 15.9){

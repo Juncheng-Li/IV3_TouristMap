@@ -112,15 +112,15 @@ p {
     position: absolute;
     font-family: Arial, sans-serif;
     overflow: auto;
-    bottom: 20px;
-    right: 20px;
-    width: 250px;
+    bottom: 30px;
+    right: 48px;
+    width: 220px;
     box-shadow: 10px 10px 25px #888888;
     border-radius: 5%;
 }
 
 #filter-btn{
-    font-size: 15px;
+    font-size: 12px;
     margin: 0;
     display: block;
     padding: 10px;
@@ -135,7 +135,7 @@ p {
 }
 
 #layerFilterList a {
-    font-size: 20px;
+    font-size: 14px;
     margin: 0;
     display: block;
     padding: 14px;
@@ -145,7 +145,7 @@ p {
     background-color: #f8f8f8;
     color: #404040;
     background-position: 20px 5px;
-    background-size: 40px;
+    background-size: 35px;
     background-repeat: no-repeat;
 }
 
