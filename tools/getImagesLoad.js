@@ -242,9 +242,11 @@ var NewFeature = unique1(Feature_Nas);
 // {imageUrl: './images/poi/Melbourne Central.jpg', id: 'Melbourne Central'},
 for(i = 0; i < NewFeature.length; i++) {
     // each = "['" + NewFeature[i] + "', '" + NewFeature[i] + "'],"
-    each2 = "{imageUrl: './images/poiTest/" + NewFeature[i] + ".jpg', id: '" + NewFeature[i] + "'},"
+    // each2 = "{imageUrl: './images/poiTest/" + NewFeature[i] + ".jpg', id: '" + NewFeature[i] + "'},"
     // each2 = "{imageUrl: './images/poiTest/" + "fig_" + i + ".jpg', id: '" + "fig_" + i  + "'},"
     // each2 = "{imageUrl: '/Users/yunning/DATA/IT/poiTest/" + "fig_" + i + ".jpg', id: '" + "fig_" + i  + "'},"
+    each2 = "{imageUrl: './images/poiTest/icons/" + NewFeature[i] + ".png', id: '" + NewFeature[i] + "'},"
+
 
     console.log(each2)
 }

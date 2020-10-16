@@ -235,8 +235,8 @@ def getNonRepeatList1(data):
 NewFeature = getNonRepeatList1(Feature_Nas)
 print(len(NewFeature))
 
-path = "/Users/yunning/DATA/IT/poiTest5/"
-# path = "/Users/yunning/Library/Mobile Documents/com~apple~CloudDocs/DATA/UM/2020S2/GEOM90007/assignments/3/code/IV3_TouristMap/images/poiTest/"  # 目标路径
+# path = "/Users/yunning/DATA/IT/poiTest5/"
+path = "/Users/yunning/Library/Mobile Documents/com~apple~CloudDocs/DATA/UM/2020S2/GEOM90007/assignments/3/code/IV3_TouristMap/images/poiTest/icons/"  # 目标路径
 
 """os.listdir(path) 操作效果为 返回指定路径(path)文件夹中所有文件名"""
 filename_list = os.listdir(path)  # 扫描目标路径的文件,将文件名存入列表
@@ -250,7 +250,8 @@ for file in filename_list:
     print("a: ", a)
     used_name = path + filename_list[a]
     # new_name = path + "fig_" + str(i) + ".jpg"
-    new_name = path + NewFeature[i] + ".jpg"
+    # new_name = path + NewFeature[i] + ".jpg"
+    new_name = path + NewFeature[i] + ".png"
     os.rename(used_name, new_name)
     print("%s ==> %s" % (used_name, new_name))
     a += 1
