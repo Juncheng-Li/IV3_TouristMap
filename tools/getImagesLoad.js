@@ -239,13 +239,22 @@ function unique1(arr){
 
 var NewFeature = unique1(Feature_Nas);
 
+
+function replace() {
+
+}
+
+
 // {imageUrl: './images/poi/Melbourne Central.jpg', id: 'Melbourne Central'},
+// https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiicons/AAMI%20Park.png
 for(i = 0; i < NewFeature.length; i++) {
     // each = "['" + NewFeature[i] + "', '" + NewFeature[i] + "'],"
     // each2 = "{imageUrl: './images/poiTest/" + NewFeature[i] + ".jpg', id: '" + NewFeature[i] + "'},"
     // each2 = "{imageUrl: './images/poiTest/" + "fig_" + i + ".jpg', id: '" + "fig_" + i  + "'},"
     // each2 = "{imageUrl: '/Users/yunning/DATA/IT/poiTest/" + "fig_" + i + ".jpg', id: '" + "fig_" + i  + "'},"
-    each2 = "{imageUrl: './images/poiTest/icons/" + NewFeature[i] + ".png', id: '" + NewFeature[i] + "'},"
+    // each2 = "{imageUrl: './images/poiTest/icons/" + NewFeature[i] + ".png', id: '" + NewFeature[i] + "'},"
+
+    each2 = "{imageUrl: 'https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiicons/" + NewFeature[i].replace(new RegExp(" ", "gm"), "%20") + ".png', id: '" + NewFeature[i] + "'},"
 
 
     console.log(each2)
