@@ -7,6 +7,7 @@ imagesAll = [
     {imageUrl: './images/icon/harbor.png', id: 'harbor'},
     {imageUrl: './images/icon/indoor.png', id: 'indoor'},
     {imageUrl: './images/icon/building.png', id: 'building'},
+    {imageUrl: './images/icon/sport.png', id: 'sport'},
 
     {imageUrl: './images/poiTest/icons/Melbourne Aquarium.png', id: 'Melbourne Aquarium'},
     {imageUrl: './images/poiTest/icons/The Museum Of Australian Chinese History.png', id: 'The Museum Of Australian Chinese History'},
