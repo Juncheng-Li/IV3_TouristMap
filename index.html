@@ -95,19 +95,23 @@
     var parkBtn = document.getElementById("park-btn");
     parkBtn.addEventListener('click', () => {
         console.log("park!!!");
+        showPoints("theatre"); //===========use 'theatre' as an example add by Haoyue Xie 20201018
     });
     var ptvBtn = document.getElementById("ptv-btn");
     ptvBtn.addEventListener('click', () => {
         console.log("ptv!!!");
+        showPoints("church"); //===========use 'church' as an example add by Haoyue Xie 20201018
     });
     var bikeBtn = document.getElementById("bike-btn");
     bikeBtn.addEventListener('click', () => {
         console.log("bike!!!");
+        showPoints("building"); //===========use 'building' as an example add by Haoyue Xie 20201018
     });
     var closeBtn = document.getElementById("close-btn");
     closeBtn.addEventListener('click', () => {
         // console.log("close!!!");
         detailPanel.hidden = true;
+        clearMarkers(); //clear all markers when close the detailPanel add by Haoyue Xie 20201018
     });
 
     var museumBtn = document.getElementById("museum-btn");
@@ -125,6 +129,9 @@
     var mapChooseBtn= document.getElementById('mapChoose-btn');
 
     var classifications = ['museum', 'church', 'shop', 'nature','theatre','harbor','indoor','sport','building'];
+
+    var coordinates = ''  //================add by Haoyue Xie 20201018
+    var currentMarkers = []  //=============add by Haoyue Xie 20201018
 
     map.on('load', function () {
         const images = imagesAll;
@@ -160,6 +167,11 @@
 
                 map.on('click', layerID, function (e) {
                     showDetailPanel(e.features[0]);
+                    //=============add by Haoyue Xie 20201018=====================
+                    coordinates = e.features[0].properties.X + " " + e.features[0].properties.Y ;
+                    console.log("coordinate for the present point:");
+                    console.log(coordinates)
+                    //ends here
                 });
 
                 var buttonName = getButtonName(layerID)
@@ -318,6 +330,65 @@
         }
         return buttonName;
     }
+
+    //=========find positions nearby ====== add by Haoyue Xie 20201018
+
+    function showPoints(name) {
+        clearMarkers();
+        var width = 0.01;
+        var height = 0.01;
+        var layerName = ''
+        console.log(classifications)
+        console.log(name)
+        for (let i =0;i<classifications.length;i++){
+            if (classifications[i] === name.toString()){
+                layerName = classifications[i];
+                break;
+            }
+        }
+        var id = 'poi-'+layerName;
+        var Features = map.queryRenderedFeatures({
+            //layers: ['Melbourne_POIs_MGA-0lenk4']
+            layers:[id]
+        });
+        console.log("Features:")
+        console.log(Features.length)
+        //var divA = document.getElementById("Info");
+        //var coordinates = divA.innerHTML.split(' ')
+        var coords = coordinates.split(' ')
+        var X = parseFloat(coords[0])
+        var Y = parseFloat(coords[1])
+        console.log('X and Y');
+        console.log(X);
+        console.log(Y);
+        for (let i = 0; i < Features.length; i++) {
+            //if (Features[i].properties.Theme === name) {
+            x = Features[i].properties.X
+            y = Features[i].properties.Y
+            console.log('feature coordinates:')
+            console.log(x);
+            console.log(y);
+            if ((X - width / 2) < x && (X + width / 2) > x && (Y - height) < y && (Y + height) > y) {
+                var marker = new mapboxgl.Marker() //put a marker on the map
+                    .setLngLat([x, y])
+                    .addTo(map);
+                currentMarkers.push(marker) // stores the markers that has been put
+            }
+
+            //}
+        }
+
+    }
+
+    function clearMarkers() {
+        if (currentMarkers !== null) {
+            for (var i = currentMarkers.length - 1; i >= 0; i--) {
+                currentMarkers[i].remove();
+            }
+        }
+    }
+    //=========find positions nearby ====== ends here
+
 </script>
 
 </body>
