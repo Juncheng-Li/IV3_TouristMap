@@ -27,39 +27,38 @@
             <h4 id="subtitle">subtitle</h4>
         </div>
         <div id="place">
-            <img id="placeImage" src="./images/poi/Melbourne%20Central.jpg" alt="poi">
+            <img id="placeImage" src="" alt="poi">
         </div>
 
         <div>
             <p class="Description">
-                <img src="images/other/location.png" alt="" style="width: 15px; height: 15px; margin-right: 8px">
+                <img src="https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/location.png" alt="" style="width: 15px; height: 15px; margin-right: 8px">
                 Address: 100 Swanston St, Melbourne 3000
             </p>
             <p class="Description">
-                <img src="images/other/clock3.png" alt="" style="width: 15px; height: 15px; margin-right: 8px">
+                <img src="https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/clock3.png" alt="" style="width: 15px; height: 15px; margin-right: 8px">
                 Open hours: 10:00 - 18:00
             </p>
         </div>
         <div class="advanceInfo">
             <p class="infoButton ">
-                <button class="filters" id="park-btn"
-                        style="background-image: url(./images/other/icons8-parking-96.png)"></button>
-                <button class="filters" id="bike-btn" style="background-image: url(./images/other/bike.png)"></button>
-                <button class="filters" id="ptv-btn" style="background-image: url(./images/other/ptv.jpeg)"></button>
+                <button class="filters" id="park-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/icons8-parking-96.png)"></button>
+                <button class="filters" id="bike-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/bike.png)"></button>
+                <button class="filters" id="ptv-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/ptv.jpeg)"></button>
             </p>
         </div>
     </div>
     <div class="layerFilterPanel" id="layerFilterPanel">
         <nav id="layerFilterList">
-            <a href="#" class="layerFilterBtn" id="museum-btn" style="background-image: url(./images/icon/museum.png) ">Museum</a>
-            <a href="#" class="layerFilterBtn" id="church-btn" style="background-image: url(./images/icon/church.png) ">Church</a>
-            <a href="#" class="layerFilterBtn" id="shop-btn" style="background-image: url(./images/icon/shop.png) ">Shopping</a>
-            <a href="#" class="layerFilterBtn" id="nature-btn" style="background-image: url(./images/icon/nature.png) ">Park</a>
-            <a href="#" class="layerFilterBtn" id="theatre-btn" style="background-image: url(./images/icon/theatre.png) ">Theatre</a>
-            <a href="#" class="layerFilterBtn" id="harbor-btn" style="background-image: url(images/icon/harbor.png) ">Harbor</a>
-            <a href="#" class="layerFilterBtn" id="indoor-btn" style="background-image: url(./images/icon/indoor.png) ">Indoor</a>
-            <a href="#" class="layerFilterBtn" id="building-btn" style="background-image: url(./images/icon/building.png) ">Building</a>
-            <a href="#" class="layerFilterBtn" id="sport-btn" style="background-image: url(./images/icon/sport.png) ">Sport</a>
+            <a href="#" class="layerFilterBtn" id="museum-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/museum.png) ">Museum</a>
+            <a href="#" class="layerFilterBtn" id="church-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/church.png) ">Church</a>
+            <a href="#" class="layerFilterBtn" id="shop-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/shop.png) ">Shopping</a>
+            <a href="#" class="layerFilterBtn" id="nature-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/nature.png) ">Park</a>
+            <a href="#" class="layerFilterBtn" id="theatre-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/theatre.png) ">Theatre</a>
+            <a href="#" class="layerFilterBtn" id="harbor-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/harbor.png) ">Harbor</a>
+            <a href="#" class="layerFilterBtn" id="indoor-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/indoor.png) ">Indoor</a>
+            <a href="#" class="layerFilterBtn" id="building-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/building.png) ">Building</a>
+            <a href="#" class="layerFilterBtn" id="sport-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/sport.png) ">Sport</a>
         </nav>
         <a href="#" id="filter-btn">SELECT WHAT TO SEE</a>
     </div>
@@ -246,7 +245,7 @@
         detailSubtitle.innerHTML = '<h4>' + poi.properties.Sub_Theme + '</h4>';
         //set detail panel image
         var placeImg = document.getElementById("place");
-        placeImg.innerHTML = "<img id = \"placeImage\" src=\"./images/poiTest/images/" + poi.properties.Feature_Na + ".jpg\" alt=\"poi\">";
+        placeImg.innerHTML = "<img id = \"placeImage\" src=\"https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiimages/image%20" + poi.properties.Feature_Na.replace(new RegExp(" ", "gm"), "%20") + ".jpg\" alt=\"poi\">";
         detailPanel.hidden = false;
     }
 
