@@ -59,6 +59,8 @@
             <a href="#" class="layerFilterBtn" id="indoor-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/indoor.png) ">Indoor</a>
             <a href="#" class="layerFilterBtn" id="building-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/building.png) ">Building</a>
             <a href="#" class="layerFilterBtn" id="sport-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/sport.png) ">Sport</a>
+            <a href="#" class="layerFilterAllBtn" id="selectall-btn">Select all</a>
+            <a href="#" class="layerFilterAllBtn" id="deselectall-btn" >Deselect all</a>
         </nav>
         <a href="#" id="filter-btn">SELECT WHAT TO SEE</a>
     </div>
@@ -119,6 +121,9 @@
     var indoorBtn = document.getElementById("indoor-btn");
     var sportBtn = document.getElementById("sport-btn");
     var buildingBtn = document.getElementById("building-btn");
+    var selectallBtn = document.getElementById("selectall-btn");
+    var deselectallBtn = document.getElementById("deselectall-btn");
+
 
     var layerFilterList = document.getElementById("layerFilterList");
     var filterBtn = document.getElementById("filter-btn");
@@ -177,6 +182,24 @@
                         map.setLayoutProperty(layerID, 'visibility', 'visible');
                     }
                 };
+
+                selectallBtn.onclick = function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    classifications.forEach(classification => {
+                        map.setLayoutProperty("poi-" + classification, 'visibility', 'visible');
+                        eval(classification+"Btn").className = 'active';
+                    })
+                };
+
+                deselectallBtn.onclick = function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    classifications.forEach(classification => {
+                        map.setLayoutProperty("poi-" + classification, 'visibility', 'none');
+                        eval(classification+"Btn").className = 'disable';
+                    })
+                }
             }
         });
 
