@@ -24,7 +24,6 @@
         <button id="close-btn">x</button>
         <div>
             <h3 id="detailTitle">Title</h3>
-            <h4 id="subtitle">subtitle</h4>
         </div>
         <div id="place">
             <img id="placeImage" src="" alt="poi">
@@ -263,9 +262,6 @@
         //set detail panel title
         var detailTitle = document.getElementById("detailTitle");
         detailTitle.innerHTML = '<h2>' + poi.properties.Feature_Na + '</h2>';
-        //set subtitle
-        var detailSubtitle = document.getElementById("subtitle");
-        detailSubtitle.innerHTML = '<h4>' + poi.properties.Sub_Theme + '</h4>';
         //set detail panel image
         var placeImg = document.getElementById("place");
         placeImg.innerHTML = "<img id = \"placeImage\" src=\"https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiimages/image%20" + poi.properties.Feature_Na.replace(new RegExp(" ", "gm"), "%20") + ".jpg\" alt=\"poi\">";
