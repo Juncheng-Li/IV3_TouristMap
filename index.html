@@ -44,6 +44,7 @@
                 <button class="filters" id="park-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/icons8-parking-96.png)"></button>
                 <button class="filters" id="bike-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/bike.png)"></button>
                 <button class="filters" id="ptv-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/ptv.jpeg)"></button>
+                <button class="closeNearby" id="nearbyClose-btn">Close nearby points</button>
             </p>
         </div>
     </div>
@@ -92,25 +93,11 @@
 
     var detailPanel = document.getElementById("detailPanel");
     detailPanel.hidden = true;
-
     var parkBtn = document.getElementById("park-btn");
-    parkBtn.addEventListener('click', () => {
-        console.log("park!!!");
-    });
     var ptvBtn = document.getElementById("ptv-btn");
-    ptvBtn.addEventListener('click', () => {
-        console.log("ptv!!!");
-    });
     var bikeBtn = document.getElementById("bike-btn");
-    bikeBtn.addEventListener('click', () => {
-        console.log("bike!!!");
-    });
+    var nearbyCloseBtn = document.getElementById("nearbyClose-btn");
     var closeBtn = document.getElementById("close-btn");
-    closeBtn.addEventListener('click', () => {
-        // console.log("close!!!");
-        detailPanel.hidden = true;
-    });
-
     var museumBtn = document.getElementById("museum-btn");
     var churchBtn = document.getElementById("church-btn");
     var shopBtn = document.getElementById("shop-btn");
@@ -122,13 +109,12 @@
     var buildingBtn = document.getElementById("building-btn");
     var selectallBtn = document.getElementById("selectall-btn");
     var deselectallBtn = document.getElementById("deselectall-btn");
-
-
     var layerFilterList = document.getElementById("layerFilterList");
     var filterBtn = document.getElementById("filter-btn");
     var mapChooseBtn= document.getElementById('mapChoose-btn');
 
-    var classifications = ['museum', 'church', 'shop', 'nature','theatre','harbor','indoor','sport','building'];
+    var clickedPoint;
+    var classifications = ['railwayStation','museum', 'church', 'shop', 'nature','theatre','harbor','indoor','sport','building'];
 
     map.on('load', function () {
         const images = imagesAll;
@@ -153,56 +139,78 @@
                     type: 'symbol',
                     source: 'poi',
                     layout: {
-                        'visibility': 'visible',
+                        'visibility': getvisibilitySet(layerID),
                         'icon-image':classification,
                         'icon-size': 0.18,
-                        'icon-allow-overlap': true
+                        'icon-allow-overlap': true,
                     },
                     filter: ['in', 'Sub_Theme'].concat(getFilterParameter(layerID)),
                     'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
                 });
 
                 map.on('click', layerID, function (e) {
-                    showDetailPanel(e.features[0]);
+                    clickedPoint = e.features[0];
+                    showDetailPanel(clickedPoint);
                 });
 
-                var buttonName = getButtonName(layerID)
-                eval(buttonName).onclick = function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
+                if (layerID !== "poi-railwayStation"){
+                    var buttonName = getButtonName(layerID)
+                    eval(buttonName).onclick = function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
 
-                    let visibility = map.getLayoutProperty(layerID, 'visibility');
+                        let visibility = map.getLayoutProperty(layerID, 'visibility');
 
-                    if (visibility !== 'none') {
-                        map.setLayoutProperty(layerID, 'visibility', 'none');
-                        this.className = 'disable';
-                    } else {
-                        this.className = 'active';
-                        map.setLayoutProperty(layerID, 'visibility', 'visible');
+                        if (visibility !== 'none') {
+                            map.setLayoutProperty(layerID, 'visibility', 'none');
+                            this.className = 'disable';
+                        } else {
+                            this.className = 'active';
+                            map.setLayoutProperty(layerID, 'visibility', 'visible');
+                        }
+                    };
+
+                    selectallBtn.onclick = function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        classifications.forEach(classification => {
+                            if (classification !== 'railwayStation'){
+                                map.setLayoutProperty("poi-" + classification, 'visibility', 'visible');
+                                eval(classification+"Btn").className = 'active';
+                            }
+
+                        })
+                    };
+
+                    deselectallBtn.onclick = function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        classifications.forEach(classification => {
+                            if (classification !== 'railwayStation'){
+                                map.setLayoutProperty("poi-" + classification, 'visibility', 'none');
+                                eval(classification+"Btn").className = 'disable';
+                            }
+                        })
                     }
-                };
-
-                selectallBtn.onclick = function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    classifications.forEach(classification => {
-                        map.setLayoutProperty("poi-" + classification, 'visibility', 'visible');
-                        eval(classification+"Btn").className = 'active';
-                    })
-                };
-
-                deselectallBtn.onclick = function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    classifications.forEach(classification => {
-                        map.setLayoutProperty("poi-" + classification, 'visibility', 'none');
-                        eval(classification+"Btn").className = 'disable';
-                    })
                 }
             }
         });
 
+        map.addLayer({
+            id: 'poi-all',
+            type: 'circle',
+            source: 'poi',
+            'paint': {
+                'circle-radius': 12,
+                'circle-blur': 0.5,
+                'circle-color': 'rgba(0,0,0,0)'
+            },
+            'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
+        });
+
     });
+
+
 
     map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
@@ -258,6 +266,86 @@
         }
     }
 
+    parkBtn.addEventListener('click', () => {
+        console.log("park!!!");
+        var features = map.queryRenderedFeatures( { layers: ['poi-all'] });
+        console.log(features)
+    });
+
+    ptvBtn.addEventListener('click', () => {
+        console.log("ptv!!!");
+        showNearby("railwayStation")
+    });
+
+    bikeBtn.addEventListener('click', () => {
+        console.log("bike!!!");
+    });
+
+    nearbyCloseBtn.addEventListener('click', () => {
+        console.log("nearbyCloseBtn!!!");
+        disableNearby("railwayStation")
+        detailPanel.hidden = true;
+    });
+
+    closeBtn.addEventListener('click', () => {
+        // console.log("close!!!");
+        detailPanel.hidden = true;
+    });
+
+    function showNearby(nearby) {
+        var width = 0.02;
+        var height = 0.02;
+        var X = clickedPoint.properties.X;
+        var Y = clickedPoint.properties.Y;
+        var nearbyFilter = [];
+
+        var features = map.queryRenderedFeatures( { layers: ['poi-all'] });
+        console.log(features)
+
+        features.forEach(feature =>{
+            var x = feature.properties.X
+            var y = feature.properties.Y
+            var Sub_Theme = feature.properties.Sub_Theme
+            if ((X - width / 2) < x && (X + width / 2) > x && (Y - height / 2) < y && (Y + height / 2) > y && Sub_Theme === 'Railway Station') {
+                nearbyFilter.push(feature.properties.Feature_Na)
+            }
+        });
+        console.log(nearbyFilter)
+
+        classifications.forEach(classification => {
+            if (classification === nearby){
+                map.setLayoutProperty("poi-" + nearby, 'visibility', 'visible');
+                map.setFilter("poi-" + nearby, ['in', 'Feature_Na'].concat(nearbyFilter));
+            }
+            else if (classification === (clickedPoint.layer.id).split("-")[1]){
+                var clickedPointName = clickedPoint.properties.Feature_Na;
+                map.setFilter("poi-" + classification, ['in', 'Feature_Na',clickedPointName]);
+            }
+            else{
+                map.setLayoutProperty("poi-" + classification, 'visibility', 'none');
+            }
+        })
+    }
+
+    function disableNearby(nearby) {
+        classifications.forEach(classification => {
+            if (classification === 'railwayStation' || classification === 'parking' || classification === 'tramStation'){
+                map.setLayoutProperty("poi-" + classification, 'visibility', 'none');
+            }
+            else if (classification === (clickedPoint.layer.id).split("-")[1]){
+                map.setFilter("poi-" + classification, ['in', 'Sub_Theme'].concat(getFilterParameter("poi-"+classification)));
+            }
+            else{
+                map.setLayoutProperty("poi-" + classification, 'visibility', 'visible');
+            }
+        })
+
+        parkBtn.style.display = 'inline';
+        ptvBtn.style.display = 'inline';
+        bikeBtn.style.display = 'inline';
+
+    }
+
     function showDetailPanel(poi) {
         //set detail panel title
         var detailTitle = document.getElementById("detailTitle");
@@ -265,6 +353,14 @@
         //set detail panel image
         var placeImg = document.getElementById("place");
         placeImg.innerHTML = "<img id = \"placeImage\" src=\"https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiimages/image%20" + poi.properties.Feature_Na.replace(new RegExp(" ", "gm"), "%20") + ".jpg\" alt=\"poi\">";
+
+        console.log(poi.properties.Sub_Theme)
+        if (poi.properties.Sub_Theme === "Railway Station"){
+            parkBtn.style.display = 'none';
+            ptvBtn.style.display = 'none';
+            bikeBtn.style.display = 'none';
+        }
+
         detailPanel.hidden = false;
     }
 
@@ -300,6 +396,8 @@
         } else if (layerID === 'poi-sport') {
             filter = ['Gymnasium/Health Club', 'Major Sports & Recreation Facility']
 
+        } else if (layerID === 'poi-railwayStation') {
+            filter = ['Railway Station']
         }
         return filter;
     }
@@ -336,6 +434,14 @@
 
         }
         return buttonName;
+    }
+
+    function getvisibilitySet(layerID) {
+        if (layerID === 'poi-railwayStation'){
+            return 'none'
+        }else {
+            return 'visible';
+        }
     }
 </script>
 

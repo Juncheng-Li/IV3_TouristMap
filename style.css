@@ -60,13 +60,18 @@ body {
 }
 
 .filters {
-    /*display: block;*/
+    display: inline;
     width: 35px;
     height: 35px;
     border-radius: 50%;
     background-size: cover;
     cursor: pointer;
     border: none;
+}
+
+.closeNearby{
+    border: none;
+    background-color: rgba(0,0,0,0);
 }
 
 .advanceInfo {
@@ -87,7 +92,7 @@ p {
 }
 
 .infoButton {
-    text-align: right;
+    text-align: left;
 }
 
 
