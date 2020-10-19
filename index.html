@@ -42,6 +42,7 @@
         </div>
         <div class="advanceInfo">
             <p class="infoButton ">
+                <button class="filters" id="nearbyClose-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/icons8-parking-96.png)"></button>
                 <button class="filters" id="park-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/icons8-parking-96.png)"></button>
                 <button class="filters" id="bike-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/bike.png)"></button>
                 <button class="filters" id="ptv-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/ptv.jpeg)"></button>
@@ -96,6 +97,7 @@
     var parkBtn = document.getElementById("park-btn");
     var ptvBtn = document.getElementById("ptv-btn");
     var bikeBtn = document.getElementById("bike-btn");
+    var nearbyCloseBtn = document.getElementById("nearbyClose-btn");
     var closeBtn = document.getElementById("close-btn");
     var museumBtn = document.getElementById("museum-btn");
     var churchBtn = document.getElementById("church-btn");
@@ -138,10 +140,10 @@
                     type: 'symbol',
                     source: 'poi',
                     layout: {
-                        'visibility': 'visible',
+                        'visibility': getvisibilitySet(layerID),
                         'icon-image':classification,
                         'icon-size': 0.18,
-                        'icon-allow-overlap': true
+                        'icon-allow-overlap': true,
                     },
                     filter: ['in', 'Sub_Theme'].concat(getFilterParameter(layerID)),
                     'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
@@ -173,8 +175,11 @@
                         e.preventDefault();
                         e.stopPropagation();
                         classifications.forEach(classification => {
-                            map.setLayoutProperty("poi-" + classification, 'visibility', 'visible');
-                            eval(classification+"Btn").className = 'active';
+                            if (classification !== 'railwayStation'){
+                                map.setLayoutProperty("poi-" + classification, 'visibility', 'visible');
+                                eval(classification+"Btn").className = 'active';
+                            }
+
                         })
                     };
 
@@ -182,13 +187,28 @@
                         e.preventDefault();
                         e.stopPropagation();
                         classifications.forEach(classification => {
-                            map.setLayoutProperty("poi-" + classification, 'visibility', 'none');
-                            eval(classification+"Btn").className = 'disable';
+                            if (classification !== 'railwayStation'){
+                                map.setLayoutProperty("poi-" + classification, 'visibility', 'none');
+                                eval(classification+"Btn").className = 'disable';
+                            }
                         })
                     }
                 }
             }
         });
+
+        map.addLayer({
+            id: 'poi-all',
+            type: 'circle',
+            source: 'poi',
+            'paint': {
+                'circle-radius': 12,
+                'circle-blur': 0.5,
+                'circle-color': 'rgba(0,0,0,0)'
+            },
+            'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
+        });
+
     });
 
 
@@ -249,6 +269,8 @@
 
     parkBtn.addEventListener('click', () => {
         console.log("park!!!");
+        var features = map.queryRenderedFeatures( { layers: ['poi-all'] });
+        console.log(features)
     });
 
     ptvBtn.addEventListener('click', () => {
@@ -258,6 +280,10 @@
 
     bikeBtn.addEventListener('click', () => {
         console.log("bike!!!");
+    });
+
+    nearbyCloseBtn.addEventListener('click', () => {
+        console.log("nearbyCloseBtn!!!");
         disableNearby("railwayStation")
     });
 
@@ -273,21 +299,21 @@
         var Y = clickedPoint.properties.Y;
         var nearbyFilter = [];
 
-        var features = map.queryRenderedFeatures( { layers: ['poi-' + nearby] });
+        var features = map.queryRenderedFeatures( { layers: ['poi-all'] });
         console.log(features)
 
         features.forEach(feature =>{
             var x = feature.properties.X
             var y = feature.properties.Y
-            if ((X - width / 2) < x && (X + width / 2) > x && (Y - height / 2) < y && (Y + height / 2) > y) {
+            var Sub_Theme = feature.properties.Sub_Theme
+            if ((X - width / 2) < x && (X + width / 2) > x && (Y - height / 2) < y && (Y + height / 2) > y && Sub_Theme === 'Railway Station') {
                 nearbyFilter.push(feature.properties.Feature_Na)
             }
         });
+        console.log(nearbyFilter)
 
         classifications.forEach(classification => {
             if (classification === nearby){
-                console.log(nearby)
-                console.log(nearbyFilter);
                 map.setLayoutProperty("poi-" + nearby, 'visibility', 'visible');
                 map.setFilter("poi-" + nearby, ['in', 'Feature_Na'].concat(nearbyFilter));
             }
@@ -303,8 +329,7 @@
 
     function disableNearby(nearby) {
         classifications.forEach(classification => {
-            if (classification === nearby){
-                // map.setFilter("poi-" + classification, ['in', 'Feature_Na'].concat(nearbyFilter));
+            if (classification === 'railwayStation' || classification === 'parking' || classification === 'tramStation'){
                 map.setLayoutProperty("poi-" + classification, 'visibility', 'none');
             }
             else if (classification === (clickedPoint.layer.id).split("-")[1]){
