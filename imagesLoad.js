@@ -8,6 +8,8 @@ imagesAll = [
     {imageUrl: 'https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/indoor.png', id: 'indoor'},
     {imageUrl: 'https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/building.png', id: 'building'},
     {imageUrl: 'https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/mapicon/sport.png', id: 'sport'},
+    {imageUrl: './images/mapicon/tram.png', id: 'railwayStation'},
+
 
     {imageUrl: 'https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiicons/Melbourne%20Aquarium.png', id: 'Melbourne Aquarium'},
     {imageUrl: 'https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiicons/The%20Museum%20Of%20Australian%20Chinese%20History.png', id: 'The Museum Of Australian Chinese History'},
