@@ -42,10 +42,10 @@
         </div>
         <div class="advanceInfo">
             <p class="infoButton ">
-                <button class="filters" id="nearbyClose-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/icons8-parking-96.png)"></button>
                 <button class="filters" id="park-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/icons8-parking-96.png)"></button>
                 <button class="filters" id="bike-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/bike.png)"></button>
                 <button class="filters" id="ptv-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/ptv.jpeg)"></button>
+                <button class="closeNearby" id="nearbyClose-btn">Close nearby points</button>
             </p>
         </div>
     </div>
@@ -285,6 +285,7 @@
     nearbyCloseBtn.addEventListener('click', () => {
         console.log("nearbyCloseBtn!!!");
         disableNearby("railwayStation")
+        detailPanel.hidden = true;
     });
 
     closeBtn.addEventListener('click', () => {
@@ -339,6 +340,11 @@
                 map.setLayoutProperty("poi-" + classification, 'visibility', 'visible');
             }
         })
+
+        parkBtn.style.display = 'inline';
+        ptvBtn.style.display = 'inline';
+        bikeBtn.style.display = 'inline';
+
     }
 
     function showDetailPanel(poi) {
@@ -351,6 +357,14 @@
         //set detail panel image
         var placeImg = document.getElementById("place");
         placeImg.innerHTML = "<img id = \"placeImage\" src=\"https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiimages/image%20" + poi.properties.Feature_Na.replace(new RegExp(" ", "gm"), "%20") + ".jpg\" alt=\"poi\">";
+
+        console.log(poi.properties.Sub_Theme)
+        if (poi.properties.Sub_Theme === "Railway Station"){
+            parkBtn.style.display = 'none';
+            ptvBtn.style.display = 'none';
+            bikeBtn.style.display = 'none';
+        }
+
         detailPanel.hidden = false;
     }
 
