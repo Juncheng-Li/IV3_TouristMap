@@ -236,7 +236,7 @@ NewFeature = getNonRepeatList1(Feature_Nas)
 print(len(NewFeature))
 
 # path = "/Users/yunning/DATA/IT/poiTest5/"
-path = "/Users/yunning/Desktop/images/poi/poiimages/"  # 目标路径
+path = "/Users/yunning/Desktop/images-2/exportRename/"  # 目标路径
 
 """os.listdir(path) 操作效果为 返回指定路径(path)文件夹中所有文件名"""
 filename_list = os.listdir(path)  # 扫描目标路径的文件,将文件名存入列表
@@ -252,7 +252,8 @@ for file in filename_list:
     # new_name = path + "fig_" + str(i) + ".jpg"
     # new_name = path + NewFeature[i] + ".jpg"
     # new_name = path + NewFeature[i] + ".png"
-    new_name = path + "image " + NewFeature[i] + ".jpg"
+    # new_name = path + "image " + NewFeature[i] + ".jpg"
+    new_name = path + "image " + filename_list[a]
 
     os.rename(used_name, new_name)
     print("%s ==> %s" % (used_name, new_name))
