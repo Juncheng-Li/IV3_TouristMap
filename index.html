@@ -126,7 +126,7 @@
 
         map.addSource('poi', {
             type: 'vector',
-            url: 'mapbox://yunningg.d15riytj'
+            url: 'mapbox://yunningg.czug4uis'
         });
 
         classifications.forEach(classification => {
@@ -145,7 +145,7 @@
                         'icon-allow-overlap': true,
                     },
                     filter: ['in', 'Sub_Theme'].concat(getFilterParameter(layerID)),
-                    'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
+                    'source-layer': 'POIs-New-bazejy', // the name of your new point layer (see tileset)
                 });
 
                 map.on('click', layerID, function (e) {
@@ -205,9 +205,8 @@
                 'circle-blur': 0.5,
                 'circle-color': 'rgba(0,0,0,0)'
             },
-            'source-layer': 'Melbourne_POIs_MGA-0lenk4', // the name of your new point layer (see tileset)
+            'source-layer': 'POIs-New-bazejy', // the name of your new point layer (see tileset)
         });
-
     });
 
 
@@ -295,16 +294,16 @@
     function showNearby(nearby) {
         var width = 0.02;
         var height = 0.02;
-        var X = clickedPoint.properties.X;
-        var Y = clickedPoint.properties.Y;
+        var X = clickedPoint.properties.Longitude;
+        var Y = clickedPoint.properties.Latitude;
         var nearbyFilter = [];
 
         var features = map.queryRenderedFeatures( { layers: ['poi-all'] });
         console.log(features)
 
         features.forEach(feature =>{
-            var x = feature.properties.X
-            var y = feature.properties.Y
+            var x = feature.properties.Longitude
+            var y = feature.properties.Latitude
             var Sub_Theme = feature.properties.Sub_Theme
             if ((X - width / 2) < x && (X + width / 2) > x && (Y - height / 2) < y && (Y + height / 2) > y && Sub_Theme === 'Railway Station') {
                 nearbyFilter.push(feature.properties.Feature_Na)
