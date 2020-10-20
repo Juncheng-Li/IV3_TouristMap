@@ -42,7 +42,7 @@
         <div class="advanceInfo">
             <p class="infoButton ">
                 <button class="filters" id="park-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/icons8-parking-96.png)"></button>
-                <button class="filters" id="bike-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/bike.png)"></button>
+                <button class="filters" id="bike-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/tramdetail.png)"></button>
                 <button class="filters" id="ptv-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/ptv.jpeg)"></button>
                 <button class="closeNearby" id="nearbyClose-btn">Close nearby points</button>
             </p>
@@ -114,7 +114,7 @@
     var mapChooseBtn= document.getElementById('mapChoose-btn');
 
     var clickedPoint;
-    var classifications = ['railwayStation','museum', 'church', 'shop', 'nature','theatre','harbor','indoor','sport','building'];
+    var classifications = ['railwayStation','tram','parking','museum', 'church', 'shop', 'nature','theatre','harbor','indoor','sport','building'];
 
     map.on('load', function () {
         const images = imagesAll;
@@ -153,7 +153,7 @@
                     showDetailPanel(clickedPoint);
                 });
 
-                if (layerID !== "poi-railwayStation"){
+                if (layerID !== "poi-railwayStation" && layerID !== "poi-tram" && layerID !== "poi-parking"){
                     var buttonName = getButtonName(layerID)
                     eval(buttonName).onclick = function (e) {
                         e.preventDefault();
@@ -174,7 +174,7 @@
                         e.preventDefault();
                         e.stopPropagation();
                         classifications.forEach(classification => {
-                            if (classification !== 'railwayStation'){
+                            if (classification !== 'railwayStation' && classification !== 'tram' && classification !== 'parking'){
                                 map.setLayoutProperty("poi-" + classification, 'visibility', 'visible');
                                 eval(classification+"Btn").className = 'active';
                             }
@@ -186,7 +186,7 @@
                         e.preventDefault();
                         e.stopPropagation();
                         classifications.forEach(classification => {
-                            if (classification !== 'railwayStation'){
+                            if (classification !== 'railwayStation' && classification !== 'tram' && classification !== 'parking'){
                                 map.setLayoutProperty("poi-" + classification, 'visibility', 'none');
                                 eval(classification+"Btn").className = 'disable';
                             }
@@ -266,18 +266,18 @@
     }
 
     parkBtn.addEventListener('click', () => {
-        console.log("park!!!");
-        var features = map.queryRenderedFeatures( { layers: ['poi-all'] });
-        console.log(features)
+        console.log("parking!!!");
+        showNearby("parking")
     });
 
     ptvBtn.addEventListener('click', () => {
-        console.log("ptv!!!");
+        console.log("railwayStation!!!");
         showNearby("railwayStation")
     });
 
     bikeBtn.addEventListener('click', () => {
-        console.log("bike!!!");
+        console.log("tram!!!");
+        showNearby("tram")
     });
 
     nearbyCloseBtn.addEventListener('click', () => {
@@ -305,7 +305,7 @@
             var x = feature.properties.Longitude
             var y = feature.properties.Latitude
             var Sub_Theme = feature.properties.Sub_Theme
-            if ((X - width / 2) < x && (X + width / 2) > x && (Y - height / 2) < y && (Y + height / 2) > y && Sub_Theme === 'Railway Station') {
+            if ((X - width / 2) < x && (X + width / 2) > x && (Y - height / 2) < y && (Y + height / 2) > y && Sub_Theme === getRelativeSubTheme(nearby)) {
                 nearbyFilter.push(feature.properties.Feature_Na)
             }
         });
@@ -328,7 +328,7 @@
 
     function disableNearby(nearby) {
         classifications.forEach(classification => {
-            if (classification === 'railwayStation' || classification === 'parking' || classification === 'tramStation'){
+            if (classification === 'railwayStation' || classification === 'tram' || classification === 'parking'){
                 map.setLayoutProperty("poi-" + classification, 'visibility', 'none');
             }
             else if (classification === (clickedPoint.layer.id).split("-")[1]){
@@ -354,7 +354,7 @@
         placeImg.innerHTML = "<img id = \"placeImage\" src=\"https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiimages/image%20" + poi.properties.Feature_Na.replace(new RegExp(" ", "gm"), "%20") + ".jpg\" alt=\"poi\">";
 
         console.log(poi.properties.Sub_Theme)
-        if (poi.properties.Sub_Theme === "Railway Station"){
+        if (poi.properties.Sub_Theme === "Railway Station" || poi.properties.Sub_Theme === "Tram Stop" || poi.properties.Sub_Theme === "Car Park"){
             parkBtn.style.display = 'none';
             ptvBtn.style.display = 'none';
             bikeBtn.style.display = 'none';
@@ -401,6 +401,12 @@
 
         } else if (layerID === 'poi-railwayStation') {
             filter = ['Railway Station']
+
+        } else if (layerID === 'poi-tram') {
+            filter = ['Tram Stop']
+
+        } else if (layerID === 'poi-parking') {
+            filter = ['Car Park']
         }
         return filter;
     }
@@ -440,12 +446,23 @@
     }
 
     function getvisibilitySet(layerID) {
-        if (layerID === 'poi-railwayStation'){
+        if (layerID === 'poi-railwayStation' || layerID === 'poi-tram' || layerID === 'poi-parking'){
             return 'none'
         }else {
             return 'visible';
         }
     }
+
+    function getRelativeSubTheme(classification) {
+        if (classification === "railwayStation"){
+            return "Railway Station"
+        }else if(classification === "tram"){
+            return "Tram Stop"
+        }else if(classification === "parking"){
+            return 'Car Park'
+        }
+    }
+
 </script>
 
 </body>
