@@ -34,7 +34,7 @@
                 <img src="https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/location.png" alt="" style="width: 15px; height: 15px; margin-right: 8px">
                 <span id="address">Address: 100 Swanston St, Melbourne 3000</span>
             </p>
-            <p class="Description">
+            <p class="Description" id="open">
                 <img src="https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/clock3.png" alt="" style="width: 15px; height: 15px; margin-right: 8px">
                 <span id="openTime">Open hours: 10:00 - 18:00</span>
             </p>
@@ -100,7 +100,7 @@
     var placeImg = document.getElementById("place");
     var address = document.getElementById("address");
     var openTime = document.getElementById("openTime");
-
+    var open = document.getElementById("open");
     var nearbyCloseBtn = document.getElementById("nearbyClose-btn");
     var closeBtn = document.getElementById("close-btn");
     var museumBtn = document.getElementById("museum-btn");
@@ -355,6 +355,8 @@
                 map.setLayoutProperty("poi-" + classification, 'visibility', 'none');
             }
         })
+
+        filterBtn.style.display = 'none';
     }
 
     function disableNearby(nearby) {
@@ -373,7 +375,9 @@
         parkingBtn.style.display = 'inline';
         railwayBtn.style.display = 'inline';
         tramBtn.style.display = 'inline';
+        open.hidden = false
 
+        filterBtn.style.display = 'block';
     }
 
     function showDetailPanel(poi) {
@@ -394,6 +398,8 @@
             parkingBtn.style.display = 'none';
             railwayBtn.style.display = 'none';
             tramBtn.style.display = 'none';
+            open.hidden = true
+
 
         }else {
             detailTitle.innerHTML = '<h2>' + poi.properties.Feature_Na + '</h2>';
@@ -404,6 +410,7 @@
             parkingBtn.style.display = 'inline';
             railwayBtn.style.display = 'inline';
             tramBtn.style.display = 'inline';
+            open.hidden = false
         }
 
         detailPanel.hidden = false;
