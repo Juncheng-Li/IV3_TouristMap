@@ -270,13 +270,22 @@
         }else{
             classifications.forEach(classification => {
                 var layerID = 'poi-' + classification;
-                map.setLayoutProperty(
-                    layerID,
-                    'icon-image', {
-                        property: 'Feature_Na',
-                        type: 'categorical',
-                        stops: stopsAll
-                    });
+
+                if (classification !== "railwayStation" && classification !== "tram" && classification !== "parking"){
+                    map.setLayoutProperty(
+                        layerID,
+                        'icon-image', {
+                            property: 'Feature_Na',
+                            type: 'categorical',
+                            stops: stopsAll
+                        });
+                }else {
+                    console.log("setlayeout")
+                    map.setLayoutProperty(
+                        layerID,
+                        'icon-image', classification+"Circle"
+                    );
+                }
                 map.setLayoutProperty(layerID, 'icon-size', 0.25);
             });
         }

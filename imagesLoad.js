@@ -228,4 +228,7 @@ imagesAll = [
     {imageUrl: 'https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiicons/Melbourne%20International%20Karting%20Complex.png', id: 'Melbourne International Karting Complex'},
     {imageUrl: 'https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiicons/Melbourne%20Visitor%20Centre.png', id: 'Melbourne Visitor Centre'},
     {imageUrl: 'https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiicons/Melbourne%20Visitor%20Booth.png', id: 'Melbourne Visitor Booth'},
+    {imageUrl: 'https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiicons/tram.png', id: 'tramCircle'},
+    {imageUrl: 'https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiicons/parking.png', id: 'parkingCircle'},
+    {imageUrl: 'https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiicons/railway.png', id: 'railwayStationCircle'},
 ]
