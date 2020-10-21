@@ -93,6 +93,26 @@ p {
 
 .infoButton {
     text-align: left;
+    height: 35px;
+}
+
+#nearbyClose-btn {
+    display: none;
+    font-size: 12px;
+    color: white;
+    background-color: #3887be;
+    border: 1px solid #3887be;
+    border-radius: 5px;
+    box-sizing:content-box;
+    position: absolute;
+    margin-left: 5px;
+    margin-top: 15px;
+}
+
+#nearbyClose-btn:hover{
+    color: white;
+    background-color: darkorange;
+    border: 1px solid darkorange;
 }
 
 
@@ -138,6 +158,11 @@ p {
     text-decoration: none;
     text-align: center;
     background-color: #3887be;
+    color: white;
+}
+
+#filter-btn:hover{
+    background-color: darkorange;
     color: white;
 }
 

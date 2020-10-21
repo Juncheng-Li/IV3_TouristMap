@@ -44,7 +44,7 @@
                 <button class="filters" id="parking-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/icons8-parking-96.png)"></button>
                 <button class="filters" id="tram-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/tramdetail.png)"></button>
                 <button class="filters" id="railway-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/ptv.jpeg)"></button>
-                <button class="closeNearby" id="nearbyClose-btn">Close nearby points</button>
+                <button class="closeNearby" id="nearbyClose-btn">CLOSE NEARBY POINTS</button>
             </p>
         </div>
     </div>
@@ -357,6 +357,7 @@
         })
 
         filterBtn.style.display = 'none';
+        nearbyCloseBtn.style.display = 'inline-block';
     }
 
     function disableNearby(nearby) {
@@ -378,6 +379,7 @@
         open.hidden = false
 
         filterBtn.style.display = 'block';
+        nearbyCloseBtn.style.display = 'none';
     }
 
     function showDetailPanel(poi) {
