@@ -32,18 +32,18 @@
         <div>
             <p class="Description">
                 <img src="https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/location.png" alt="" style="width: 15px; height: 15px; margin-right: 8px">
-                Address: 100 Swanston St, Melbourne 3000
+                <span id="address">Address: 100 Swanston St, Melbourne 3000</span>
             </p>
             <p class="Description">
                 <img src="https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/clock3.png" alt="" style="width: 15px; height: 15px; margin-right: 8px">
-                Open hours: 10:00 - 18:00
+                <span id="openTime">Open hours: 10:00 - 18:00</span>
             </p>
         </div>
         <div class="advanceInfo">
             <p class="infoButton ">
-                <button class="filters" id="park-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/icons8-parking-96.png)"></button>
-                <button class="filters" id="bike-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/tramdetail.png)"></button>
-                <button class="filters" id="ptv-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/ptv.jpeg)"></button>
+                <button class="filters" id="parking-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/icons8-parking-96.png)"></button>
+                <button class="filters" id="tram-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/tramdetail.png)"></button>
+                <button class="filters" id="railway-btn" style="background-image: url(https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/other/ptv.jpeg)"></button>
                 <button class="closeNearby" id="nearbyClose-btn">Close nearby points</button>
             </p>
         </div>
@@ -93,9 +93,14 @@
 
     var detailPanel = document.getElementById("detailPanel");
     detailPanel.hidden = true;
-    var parkBtn = document.getElementById("park-btn");
-    var ptvBtn = document.getElementById("ptv-btn");
-    var bikeBtn = document.getElementById("bike-btn");
+    var parkingBtn = document.getElementById("parking-btn");
+    var railwayBtn = document.getElementById("railway-btn");
+    var tramBtn = document.getElementById("tram-btn");
+    var detailTitle = document.getElementById("detailTitle");
+    var placeImg = document.getElementById("place");
+    var address = document.getElementById("address");
+    var openTime = document.getElementById("openTime");
+
     var nearbyCloseBtn = document.getElementById("nearbyClose-btn");
     var closeBtn = document.getElementById("close-btn");
     var museumBtn = document.getElementById("museum-btn");
@@ -113,7 +118,9 @@
     var filterBtn = document.getElementById("filter-btn");
     var mapChooseBtn= document.getElementById('mapChoose-btn');
 
-    var clickedPoint;
+    var clickedPoint = {properties:{Feature_Na:null}};
+    var clickedDetailPoint = {properties:{Feature_Na:null}};
+    var currentLayerVisibility = new Map();
     var classifications = ['railwayStation','tram','parking','museum', 'church', 'shop', 'nature','theatre','harbor','indoor','sport','building'];
 
     map.on('load', function () {
@@ -126,7 +133,7 @@
 
         map.addSource('poi', {
             type: 'vector',
-            url: 'mapbox://yunningg.czug4uis'
+            url: 'mapbox://yunningg.bxg0ac2u'
         });
 
         classifications.forEach(classification => {
@@ -145,10 +152,36 @@
                         'icon-allow-overlap': true,
                     },
                     filter: ['in', 'Sub_Theme'].concat(getFilterParameter(layerID)),
-                    'source-layer': 'POIs-New-bazejy', // the name of your new point layer (see tileset)
+                    'source-layer': 'POIs-New2-bqjzw3', // the name of your new point layer (see tileset)
                 });
 
                 map.on('click', layerID, function (e) {
+                    if (e.features[0].properties.Sub_Theme !== "Railway Station" &&
+                        e.features[0].properties.Sub_Theme !== "Tram Stop" &&
+                        e.features[0].properties.Sub_Theme !== "Car Park"){
+
+                        if (clickedPoint !== null){
+                            if (e.features[0].properties.Feature_Na !== clickedDetailPoint.properties.Feature_Na){
+                                console.log("clear !!!!")
+                                currentLayerVisibility = new Map();
+                                classifications.forEach(classification => {
+                                    if (classification !== "railwayStation" && classification !== "tram" && classification !== "parking"){
+                                        layerVisibility = map.getLayoutProperty("poi-" + classification, 'visibility');
+                                        currentLayerVisibility.set("poi-" + classification, layerVisibility)
+                                    }
+                                })
+                            }
+                        }else{
+                            classifications.forEach(classification => {
+                                if (classification !== "railwayStation" && classification !== "tram" && classification !== "parking"){
+                                    layerVisibility = map.getLayoutProperty("poi-" + classification, 'visibility');
+                                    currentLayerVisibility.set("poi-" + classification, layerVisibility)
+                                }
+                            })
+                        }
+                        clickedDetailPoint = e.features[0];
+                    }
+
                     clickedPoint = e.features[0];
                     showDetailPanel(clickedPoint);
                 });
@@ -205,7 +238,7 @@
                 'circle-blur': 0.5,
                 'circle-color': 'rgba(0,0,0,0)'
             },
-            'source-layer': 'POIs-New-bazejy', // the name of your new point layer (see tileset)
+            'source-layer': 'POIs-New2-bqjzw3', // the name of your new point layer (see tileset)
         });
     });
 
@@ -265,17 +298,17 @@
         }
     }
 
-    parkBtn.addEventListener('click', () => {
+    parkingBtn.addEventListener('click', () => {
         console.log("parking!!!");
         showNearby("parking")
     });
 
-    ptvBtn.addEventListener('click', () => {
+    railwayBtn.addEventListener('click', () => {
         console.log("railwayStation!!!");
         showNearby("railwayStation")
     });
 
-    bikeBtn.addEventListener('click', () => {
+    tramBtn.addEventListener('click', () => {
         console.log("tram!!!");
         showNearby("tram")
     });
@@ -299,7 +332,6 @@
         var nearbyFilter = [];
 
         var features = map.queryRenderedFeatures( { layers: ['poi-all'] });
-        console.log(features)
 
         features.forEach(feature =>{
             var x = feature.properties.Longitude
@@ -309,7 +341,6 @@
                 nearbyFilter.push(feature.properties.Feature_Na)
             }
         });
-        console.log(nearbyFilter)
 
         classifications.forEach(classification => {
             if (classification === nearby){
@@ -335,33 +366,44 @@
                 map.setFilter("poi-" + classification, ['in', 'Sub_Theme'].concat(getFilterParameter("poi-"+classification)));
             }
             else{
-                map.setLayoutProperty("poi-" + classification, 'visibility', 'visible');
+                map.setLayoutProperty("poi-" + classification, 'visibility', currentLayerVisibility.get("poi-" + classification));
             }
         })
 
-        parkBtn.style.display = 'inline';
-        ptvBtn.style.display = 'inline';
-        bikeBtn.style.display = 'inline';
+        parkingBtn.style.display = 'inline';
+        railwayBtn.style.display = 'inline';
+        tramBtn.style.display = 'inline';
 
     }
 
     function showDetailPanel(poi) {
-        //set detail panel title
-        var detailTitle = document.getElementById("detailTitle");
-        detailTitle.innerHTML = '<h2>' + poi.properties.Feature_Na + '</h2>';
-        //set detail panel image
-        var placeImg = document.getElementById("place");
-        placeImg.innerHTML = "<img id = \"placeImage\" src=\"https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiimages/image%20" + poi.properties.Feature_Na.replace(new RegExp(" ", "gm"), "%20") + ".jpg\" alt=\"poi\">";
-
-        console.log(poi.properties.Sub_Theme)
         if (poi.properties.Sub_Theme === "Railway Station" || poi.properties.Sub_Theme === "Tram Stop" || poi.properties.Sub_Theme === "Car Park"){
-            parkBtn.style.display = 'none';
-            ptvBtn.style.display = 'none';
-            bikeBtn.style.display = 'none';
+            detailTitle.innerHTML = '<h2>' + poi.properties.Sub_Theme + '</h2>';
+
+            if (poi.properties.Sub_Theme === "Railway Station"){
+                placeImg.innerHTML = "<img id = \"placeImage\" src=\"https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiimages/image%20railway.jpg\" alt=\"poi\">";
+                address.innerHTML = poi.properties["Address"];
+            }else if (poi.properties.Sub_Theme === "Tram Stop"){
+                placeImg.innerHTML = "<img id = \"placeImage\" src=\"https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiimages/image%20tram.jpg\" alt=\"poi\">";
+                address.innerHTML = poi.properties["Feature_Na"];
+            }else if (poi.properties.Sub_Theme === "Car Park"){
+                placeImg.innerHTML = "<img id = \"placeImage\" src=\"https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiimages/image%20parking.jpg\" alt=\"poi\">";
+                address.innerHTML = poi.properties["Address"];
+            }
+
+            parkingBtn.style.display = 'none';
+            railwayBtn.style.display = 'none';
+            tramBtn.style.display = 'none';
+
         }else {
-            parkBtn.style.display = 'inline';
-            ptvBtn.style.display = 'inline';
-            bikeBtn.style.display = 'inline';
+            detailTitle.innerHTML = '<h2>' + poi.properties.Feature_Na + '</h2>';
+            placeImg.innerHTML = "<img id = \"placeImage\" src=\"https://ivassignment.oss-ap-southeast-2.aliyuncs.com/images/poi/poiimages/image%20" + poi.properties.Feature_Na.replace(new RegExp(" ", "gm"), "%20") + ".jpg\" alt=\"poi\">";
+            address.innerHTML = poi.properties["Address"];
+            openTime.innerHTML = poi.properties["Open Hour"];
+
+            parkingBtn.style.display = 'inline';
+            railwayBtn.style.display = 'inline';
+            tramBtn.style.display = 'inline';
         }
 
         detailPanel.hidden = false;
