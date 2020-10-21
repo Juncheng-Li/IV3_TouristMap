@@ -364,7 +364,7 @@
             if (classification === 'railwayStation' || classification === 'tram' || classification === 'parking'){
                 map.setLayoutProperty("poi-" + classification, 'visibility', 'none');
             }
-            else if (classification === (clickedPoint.layer.id).split("-")[1]){
+            else if (classification === (clickedDetailPoint.layer.id).split("-")[1]){
                 map.setFilter("poi-" + classification, ['in', 'Sub_Theme'].concat(getFilterParameter("poi-"+classification)));
             }
             else{
