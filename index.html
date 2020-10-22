@@ -117,6 +117,7 @@
     var layerFilterList = document.getElementById("layerFilterList");
     var filterBtn = document.getElementById("filter-btn");
     var mapChooseBtn= document.getElementById('mapChoose-btn');
+    var layerFilterPanel = document.getElementById('layerFilterPanel');
 
     var clickedPoint = {properties:{Feature_Na:null}};
     var clickedDetailPoint = {properties:{Feature_Na:null}};
@@ -365,7 +366,7 @@
             }
         })
 
-        filterBtn.style.display = 'none';
+        layerFilterPanel.style.display = 'none';
         nearbyCloseBtn.style.display = 'inline-block';
     }
 
@@ -387,7 +388,7 @@
         tramBtn.style.display = 'inline';
         open.hidden = false
 
-        filterBtn.style.display = 'block';
+        layerFilterPanel.style.display = 'block';
         nearbyCloseBtn.style.display = 'none';
     }
 
